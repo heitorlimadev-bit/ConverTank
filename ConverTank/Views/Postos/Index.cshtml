@@ -1,0 +1,65 @@
+﻿<div class="text-center">
+
+    <h1 class="display-2">
+
+        Postos
+
+
+    </h1>
+
+    
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cnpj</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var posto in Model())
+                        {
+            
+                            <tr>
+                                <th scope="row">@posto.Id</th>
+                                <td>@posto.Nome</td>
+                                <td>@posto.Cnpj</td>
+
+
+                                <td>
+                                    <a asp-controller="Tanque" asp-action="Index" asp-route-id="@posto.Id" type="button" class="btn btn-primary">Vizualizar</a>
+                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@posto.Id">Editar</a>
+                                    <a type="button" class="btn btn-danger"asp-action="Apagar" asp-route-id="@posto.Id">Apagar</a>
+                                </td>
+
+                    
+                            </tr>
+
+                        }
+
+
+                    </tbody>
+                </table>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-primary" type="button" asp-controller="Postos" asp-action="Adicionar">Adicionar Posto</a>
+                    <button class="btn btn-primary" type="button">Button</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    
+</div>
+
+
+

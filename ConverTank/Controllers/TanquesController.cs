@@ -9,7 +9,7 @@ namespace ConverTank.Controllers
     {   
         private ConteudoBanco context;
 
-        public TanquesController(ConteudoBanco context)
+        public TanquesController (ConteudoBanco context)
         {
             this.context = context;
         }
@@ -17,6 +17,8 @@ namespace ConverTank.Controllers
         public IActionResult Index(int id)
         {
             var tanques = context.Tanques.Where(t => t.PostoId == id).ToList();
+
+            ViewBag.PostoId = id;
 
             return View(tanques);
         }

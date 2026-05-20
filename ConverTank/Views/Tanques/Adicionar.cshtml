@@ -1,0 +1,28 @@
+﻿@model Tanque
+
+
+<div class="text-center">
+
+    <h1 class="display-2">Novo Tanque</h1>
+    <h1>@ViewBag.PostoId</h1>
+</div>
+
+
+<form asp-action="Adicionar" method="post">
+
+    <input type="hidden" asp-for="PostoId" value="@ViewBag.PostoId" />
+
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Fabricante</label>
+        <input asp-for="Fabricante" type="text" class="form-control" id="formGroupExampleInput">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Volume</label>
+        <input asp-for="Volume" type="text" class="form-control" id="formGroupExampleInput2">
+    </div>
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit"> Salvar </button>
+        <a class="btn btn-secondary" type="button" asp-controller="Postos" asp-action="Index">Voltar </a>
+    </div>
+   
+</form>

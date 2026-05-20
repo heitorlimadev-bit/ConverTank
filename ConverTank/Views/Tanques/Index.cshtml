@@ -1,0 +1,62 @@
+﻿<div class="text-center">
+
+    <h1 class="display-2">
+
+        Tanques
+
+
+    </h1>
+
+    
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Fabricante</th>
+                            <th scope="col">Volume</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var tanque in Model)
+                        {
+            
+                            <tr>
+                                <th scope="row">@tanque.Id</th>
+                                <td>@tanque.Fabricante</td>
+                                <td>@tanque.Volume</td>
+
+
+                                <td>
+                                    <a type="button" class="btn btn-primary" asp-controller="Tanque" asp-action="Index" asp-route-id="@tanque.Id" asp-for"">Vizualizar Tanque</a>
+                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@tanque.Id">Editar</a>
+                                    <a type="button" class="btn btn-danger" asp-action="Apagar" asp-route-id="@tanque.Id">Apagar</a>
+                                </td>
+
+                    
+                            </tr>
+
+                        }
+
+
+                    </tbody>
+                </table>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-primary" type="button" asp-controller="Tanques" asp-action="Adicionar" asp-route-postoId="@ViewBag.PostoId">Adicionar Tanque</a>
+                    <a class="btn btn-secondary" type="button" asp-controller="Postos" asp-action="Index">Voltar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    
+</div>

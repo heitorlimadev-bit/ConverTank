@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var posto in Model())
+                        @foreach (var posto in Model)
                         {
             
                             <tr>
@@ -35,7 +35,7 @@
 
 
                                 <td>
-                                    <a asp-controller="Tanque" asp-action="Index" asp-route-id="@posto.Id" type="button" class="btn btn-primary">Vizualizar</a>
+                                    <a type="button" class="btn btn-primary" asp-controller="Tanques" asp-action="Index" asp-route-id="@posto.Id">Vizualizar</a>
                                     <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@posto.Id">Editar</a>
                                     <a type="button" class="btn btn-danger"asp-action="Apagar" asp-route-id="@posto.Id">Apagar</a>
                                 </td>
@@ -50,7 +50,7 @@
                 </table>
                 <div class="d-grid gap-2">
                     <a class="btn btn-primary" type="button" asp-controller="Postos" asp-action="Adicionar">Adicionar Posto</a>
-                    <button class="btn btn-primary" type="button">Button</button>
+                    <a class="btn btn-secondary" type="button" asp-controller="Home" asp-action="Index">Voltar</a>
                 </div>
             </div>
 

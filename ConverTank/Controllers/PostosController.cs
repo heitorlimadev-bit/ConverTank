@@ -18,6 +18,7 @@ namespace ConverTank.Controllers
         {
             var postos = context.Postos.ToList();
             return View(postos);
+
         }
         public IActionResult Adicionar()
         {

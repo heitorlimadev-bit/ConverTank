@@ -14,6 +14,9 @@ namespace ConverTank.Data
 
         public DbSet<Tanque> Tanques { get; set; }
 
+        public DbSet<Medicao> Medicoes { get; set; }
+
+
 
     }
 }

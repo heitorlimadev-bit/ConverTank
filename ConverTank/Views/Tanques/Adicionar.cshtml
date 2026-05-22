@@ -4,7 +4,6 @@
 <div class="text-center">
 
     <h1 class="display-2">Novo Tanque</h1>
-    <h1>@ViewBag.PostoId</h1>
 </div>
 
 
@@ -19,6 +18,14 @@
     <div class="mb-3">
         <label for="formGroupExampleInput2" class="form-label">Volume</label>
         <input asp-for="Volume" type="text" class="form-control" id="formGroupExampleInput2">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Comprimento</label>
+        <input asp-for="Comprimento" type="text" class="form-control" id="formGroupExampleInput2">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Raio</label>
+        <input asp-for="Raio" type="text" class="form-control" id="formGroupExampleInput2">
     </div>
     <div class="d-grid gap-2">
         <button class="btn btn-primary" type="submit"> Salvar </button>

@@ -2,8 +2,7 @@
 
     <h1 class="display-2">
 
-        Tanques
-
+        Mediçoes do Tanque Selecionado
 
     </h1>
 
@@ -18,26 +17,27 @@
                     <thead class="table-light">
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Fabricante</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Altura</th>
                             <th scope="col">Volume</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach (var tanque in Model)
+                        @foreach (var medicao in Model)
                         {
             
                             <tr>
-                                <th scope="row">@tanque.Id</th>
-                                <td>@tanque.Fabricante</td>
-                                <td>@tanque.Volume</td>
+                                <th scope="row">@medicao.Id</th>
+                                <td>@medicao.DataMedicao</td>
+                                <td>@medicao.Altura</td>
+                                <td>@medicao.Volume</td>
 
 
                                 <td>
-                                    <a type="button" class="btn btn-primary" asp-controller="Medicoes" asp-action="Index" asp-route-id="@tanque.Id" asp-for"">Vizualizar Tanque</a>
-                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@tanque.Id">Editar</a>
-                                    <a type="button" class="btn btn-danger" asp-action="Apagar" asp-route-id="@tanque.Id">Apagar</a>
+                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@medicao.Id">Editar</a>
+                                    <a type="button" class="btn btn-danger" asp-action="Apagar" asp-route-id="@medicao.Id">Apagar</a>
                                 </td>
 
                     
@@ -49,7 +49,7 @@
                     </tbody>
                 </table>
                 <div class="d-grid gap-2">
-                    <a class="btn btn-primary" type="button" asp-controller="Tanques" asp-action="Adicionar" asp-route-postoId="@ViewBag.PostoId">Adicionar Tanque</a>
+                    <a class="btn btn-primary" type="button" asp-controller="Medicoes" asp-action="Adicionar" asp-route-tanqueId="@ViewBag.TanqueId">Realizar medicao</a>
                     <a class="btn btn-secondary" type="button" asp-controller="Postos" asp-action="Index">Voltar</a>
                 </div>
             </div>

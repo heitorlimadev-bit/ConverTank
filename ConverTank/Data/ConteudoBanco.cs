@@ -16,6 +16,12 @@ namespace ConverTank.Data
 
         public DbSet<Medicao> Medicoes { get; set; }
 
+        public DbSet<Combustivel> Combustiveis { get; set; }
+
+        public DbSet<Fornecedor> Fornecedores { get; set; }
+
+        public DbSet<Fabricante> Fabricantes { get; set; }
+
 
 
     }

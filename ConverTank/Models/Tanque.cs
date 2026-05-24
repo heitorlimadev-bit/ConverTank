@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string Fabricante { get; set; }
+        public Fabricante Fabricante { get; set; }
 
         public int Volume { get; set; }
 
@@ -15,6 +15,8 @@
         public int PostoId { get; set; }
 
         public Posto Posto { get; set; }
+
+        public Combustivel Combustivel { get; set; }
 
         public List<Medicao> Medicoes { get; set; } = new List<Medicao>();
 

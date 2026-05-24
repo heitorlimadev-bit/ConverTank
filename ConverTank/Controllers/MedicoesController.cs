@@ -43,9 +43,9 @@ namespace ConverTank.Controllers
             double comprimento = tanque.Comprimento;
             double altura = medicao.Altura;
 
-            
 
-            double litro = CalcularVolume(raio, comprimento, altura);
+
+            // double litro = CalcularVolume(raio, comprimento, altura);
 
 
 

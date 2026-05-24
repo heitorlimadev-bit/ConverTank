@@ -1,4 +1,4 @@
-﻿@model Posto
+﻿@model Fornecedor
 
 
 <div class="text-center">
@@ -8,7 +8,9 @@
 </div>
 
 
-<form asp-action="Adicionar"  method="post">
+<form asp-action="Editar" method="post">
+
+    <input type="hidden" asp-for="Id" />
 
     <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Nome</label>
@@ -23,6 +25,6 @@
         <button class="btn btn-primary" type="submit">Salvar</button>
 
     </div>
-   
 
+   
 </form>

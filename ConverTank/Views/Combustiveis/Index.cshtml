@@ -2,7 +2,7 @@
 
     <h1 class="display-2">
 
-        Postos
+        Combustíveis
 
     </h1>
 
@@ -17,25 +17,22 @@
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">Cnpj</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach (var posto in Model)
+                        @foreach (var combustivel in Model)
                         {
             
                             <tr>
-                                <th scope="row">@posto.Id</th>
-                                <td>@posto.Nome</td>
-                                <td>@posto.Cnpj</td>
+                                <th scope="row">@combustivel.Id</th>
+                                <td>@combustivel.Nome</td>
 
 
                                 <td>
-                                    <a type="button" class="btn btn-primary" asp-controller="Tanques" asp-action="Index" asp-route-id="@posto.Id">Vizualizar</a>
-                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@posto.Id">Editar</a>
-                                    <a type="button" class="btn btn-danger"asp-action="Apagar" asp-route-id="@posto.Id">Apagar</a>
+                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@combustivel.Id">Editar</a>
+                                    <a type="button" class="btn btn-danger" asp-action="Apagar" asp-route-id="@combustivel.Id">Apagar</a>
                                 </td>
 
                     
@@ -47,7 +44,7 @@
                     </tbody>
                 </table>
                 <div class="d-grid gap-2">
-                    <a class="btn btn-primary" type="button" asp-controller="Postos" asp-action="Adicionar">Adicionar Posto</a>
+                    <a class="btn btn-primary" type="button" asp-controller="Fornecedores" asp-action="Adicionar">Adicionar Fornecedor</a>
                     <a class="btn btn-secondary" type="button" asp-controller="Home" asp-action="Index">Voltar</a>
                 </div>
 
@@ -55,6 +52,6 @@
 
         </div>
 
-    </div>  
+    </div>
 
 </div>

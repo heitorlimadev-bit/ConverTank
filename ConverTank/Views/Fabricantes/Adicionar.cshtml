@@ -1,20 +1,22 @@
-﻿@model Combustivel
+﻿@model Fabricante
 
 
 <div class="text-center">
 
-    <h1 class="display-2">Combustível</h1>
+    <h1 class="display-2">Novo Fabricante</h1>
 
 </div>
 
 
-<form asp-action="Editar" method="post">
-
-    <input type="hidden" asp-for="Id" />
+<form asp-action="Adicionar" method="post">
 
     <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Nome</label>
         <input asp-for="Nome" type="text" class="form-control" id="formGroupExampleInput">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Cnpj</label>
+        <input asp-for="Cnpj" type="text" class="form-control" id="formGroupExampleInput2">
     </div>
     <div class="d-grid">
 

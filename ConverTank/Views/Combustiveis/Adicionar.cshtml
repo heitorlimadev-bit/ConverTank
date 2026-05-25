@@ -13,6 +13,20 @@
     <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Nome</label>
         <input asp-for="Nome" type="text" class="form-control" id="formGroupExampleInput">
+
+        <label for="formGroupExampleInput" class="form-label">Fornecedor</label>
+        <select asp-for="FornecedorId" type="text" class="form-control" id="formGroupExampleInput">
+            @foreach (var fornecedor in ViewBag.Fornecedores)
+            {
+
+                <option value="@fornecedor.Id">
+
+                    @fornecedor.Nome
+
+                </option>
+
+            }
+        </select>
     </div>
     <div class="d-grid">
 

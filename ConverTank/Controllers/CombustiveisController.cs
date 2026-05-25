@@ -1,6 +1,7 @@
 ﻿using ConverTank.Data;
 using ConverTank.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConverTank.Controllers
 {
@@ -15,12 +16,13 @@ namespace ConverTank.Controllers
         }
         public IActionResult Index()
         {
-            var combustiveis = context.Combustiveis.ToList();
+            var combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
             return View(combustiveis);
         }
         public IActionResult Adicionar()
-        { 
-        
+        {
+
+            ViewBag.Fornecedores = context.Fornecedores.ToList();
             return View();
         
         }

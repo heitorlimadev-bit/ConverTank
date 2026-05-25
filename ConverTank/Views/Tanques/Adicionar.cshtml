@@ -13,7 +13,32 @@
 
     <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Fabricante</label>
-        <input asp-for="Fabricante" type="text" class="form-control" id="formGroupExampleInput">
+        <select asp-for="Fabricante" type="text" class="form-control" id="formGroupExampleInput">
+        @foreach (var fabricante in ViewBag.Fabricantes)
+        {
+
+            <option value ="@fabricante.Id">
+
+                @fabricante.Nome
+
+            </option> 
+
+        }
+        </select>
+        <label for="formGroupExampleInput" class="form-label">Fabricante</label>
+        <select asp-for="Fabricante" type="text" class="form-control" id="formGroupExampleInput">
+            @foreach (var combustivel in ViewBag.Combustiveis)
+            {
+
+                <option value="@combustivel.Id">
+
+                    @combustivel.Nome
+                    @combustivel.Fornecedor.Nome
+
+                </option>
+
+            }
+        </select>
     </div>
     <div class="mb-3">
         <label for="formGroupExampleInput2" class="form-label">Volume</label>

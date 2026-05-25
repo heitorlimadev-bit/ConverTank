@@ -6,6 +6,10 @@
 
         public string Nome { get; set; }
 
+        public int FornecedorId { get; set; }
+
+        public Fornecedor Fornecedor { get; set; }
+
 
     }
 }

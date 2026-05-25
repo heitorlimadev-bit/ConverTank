@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ConverTank.Data;
 using ConverTank.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace ConverTank.Controllers
@@ -25,7 +26,8 @@ namespace ConverTank.Controllers
 
         public IActionResult Adicionar(int postoId)
         {
-
+            ViewBag.Combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
+            ViewBag.Fabricantes = context.Fabricantes.ToList();
             ViewBag.PostoId = postoId;
 
             return View();

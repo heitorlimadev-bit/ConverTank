@@ -6,6 +6,8 @@
 
         public Fabricante Fabricante { get; set; }
 
+        public int FabricanteId { get; set; }
+
         public int Volume { get; set; }
 
         public double Raio { get; set; }
@@ -17,6 +19,8 @@
         public Posto Posto { get; set; }
 
         public Combustivel Combustivel { get; set; }
+
+        public int CombustivelId { get; set; }
 
         public List<Medicao> Medicoes { get; set; } = new List<Medicao>();
 

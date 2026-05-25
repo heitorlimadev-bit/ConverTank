@@ -41,10 +41,10 @@ namespace ConverTank.Controllers
         {
 
             context.Fornecedores.Update(fornecedor);
+            context.SaveChanges();
             return RedirectToAction("Index");
 
         }
-        [HttpPost]
         public IActionResult Apagar(int Id)
         {
             var fornecedor = context.Fornecedores.Find(Id);

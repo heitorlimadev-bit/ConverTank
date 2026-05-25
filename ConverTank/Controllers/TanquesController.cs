@@ -17,7 +17,7 @@ namespace ConverTank.Controllers
 
         public IActionResult Index(int id)
         {
-            var tanques = context.Tanques.Where(t => t.PostoId == id).ToList();
+            var tanques = context.Tanques.Include(f => f.Fabricante).Where(t => t.PostoId == id).ToList();
 
             ViewBag.PostoId = id;
 
@@ -42,6 +42,26 @@ namespace ConverTank.Controllers
             context.SaveChanges();
 
             return RedirectToAction("index", new {id = tanque.PostoId});
+
+        }
+        public IActionResult Editar(int id)
+        {
+            var tanque = context.Tanques.Find(id);
+            ViewBag.Combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
+            ViewBag.Fabricantes = context.Fabricantes.ToList();
+            ViewBag.PostoId = tanque.PostoId;
+            return View(tanque);
+        
+        }
+        [HttpPost]
+        public IActionResult Editar(Tanque tanque)
+        {
+
+            context.Tanques.Update(tanque);
+
+            context.SaveChanges();
+
+            return RedirectToAction("index", new { id = tanque.PostoId });
 
         }
     }

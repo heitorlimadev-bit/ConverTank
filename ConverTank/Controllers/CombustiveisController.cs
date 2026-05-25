@@ -32,11 +32,12 @@ namespace ConverTank.Controllers
             context.Combustiveis.Add(combustivel);
             context.SaveChanges();
             return RedirectToAction("Index");
+
         }
         public IActionResult Editar(int Id)
         {
             var combustível = context.Combustiveis.Find(Id);
-
+            ViewBag.Fornecedores = context.Fornecedores.ToList();
 
             return View(combustível);
         }
@@ -48,7 +49,6 @@ namespace ConverTank.Controllers
             return RedirectToAction("Index");
 
         }
-        [HttpPost]
         public IActionResult Apagar(int Id)
         {
             var combustível = context.Combustiveis.Find(Id);

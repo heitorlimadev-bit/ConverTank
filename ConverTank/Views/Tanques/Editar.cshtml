@@ -3,27 +3,27 @@
 
 <div class="text-center">
 
-    <h1 class="display-2">Novo Tanque</h1>
+    <h1 class="display-2">Editar Tanque</h1>
 </div>
 
 
-<form asp-action="Adicionar" method="post">
+<form asp-action="Editar" method="post">
 
     <input type="hidden" asp-for="PostoId" value="@ViewBag.PostoId" />
 
     <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Fabricante</label>
         <select asp-for="FabricanteId" type="text" class="form-control" id="formGroupExampleInput">
-        @foreach (var fabricante in ViewBag.Fabricantes)
-        {
+            @foreach (var fabricante in ViewBag.Fabricantes)
+            {
 
-            <option value ="@fabricante.Id">
+                <option value="@fabricante.Id">
 
-                @fabricante.Nome
+                    @fabricante.Nome
 
-            </option> 
+                </option>
 
-        }
+            }
         </select>
         <label for="formGroupExampleInput" class="form-label">Combustível</label>
         <select asp-for="CombustivelId" type="text" class="form-control" id="formGroupExampleInput">

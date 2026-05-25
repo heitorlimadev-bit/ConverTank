@@ -49,7 +49,6 @@ namespace ConverTank.Controllers
             return RedirectToAction("Index");
         
         }
-        [HttpPost]
         public IActionResult Apagar(int id)
         {
 

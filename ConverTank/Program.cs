@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 
 
 
-builder.Services.AddDbContext<ConteudoBanco>(Options => Options.UseInMemoryDatabase("Memoria"));
+builder.Services.AddDbContext<ConteudoBanco>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

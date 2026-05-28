@@ -1,0 +1,28 @@
+﻿@model LoginViewModel
+
+<div class="text-center">
+
+    <h1 class="display-2">Convertank</h1>
+
+</div>
+
+
+<form asp-action="Login" method="post">
+
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Login</label>
+        <input asp-for="Login" type="text" class="form-control" id="formGroupExampleInput">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Senha</label>
+        <input asp-for="Senha" type="text" class="form-control" id="formGroupExampleInput2">
+    </div>
+    <div class="d-grid">
+
+        <button class="btn btn-primary" type="submit">Salvar</button>
+        <a class="btn btn-secondary" asp-action="NovoAcesso" asp-controller="Auth">Novo Acesso</a>
+
+    </div>
+
+   
+</form>

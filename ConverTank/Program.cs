@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 
 builder.Services.AddDbContext<ConteudoBanco>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddSession();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,8 +30,9 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Auth}/{action=Login}/{id?}")
     .WithStaticAssets();
 
+app.UseSession();
 
 app.Run();

@@ -26,7 +26,17 @@ namespace ConverTank.Data
 
         public DbSet<UsuarioPosto> UsuariosPostos { get;set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UsuarioPosto>().HasKey(up => new
+            {
 
+                up.UsuarioId,
+                up.PostoId
+
+            });
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

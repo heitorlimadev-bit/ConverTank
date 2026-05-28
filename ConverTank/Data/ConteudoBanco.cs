@@ -6,9 +6,9 @@ namespace ConverTank.Data
     public class ConteudoBanco : DbContext
     {
         
-        public ConteudoBanco   (DbContextOptions <ConteudoBanco> Options ) : base ( Options )
-            
-            { }
+        public ConteudoBanco   (DbContextOptions <ConteudoBanco> Options ) : base ( Options ) { }
+
+        public DbSet<Entidade> Entidades { get; set; }
 
         public DbSet<Posto> Postos { get; set; }
 
@@ -21,6 +21,10 @@ namespace ConverTank.Data
         public DbSet<Fornecedor> Fornecedores { get; set; }
 
         public DbSet<Fabricante> Fabricantes { get; set; }
+
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        public DbSet<UsuarioPosto> UsuariosPostos { get;set; }
 
 
 

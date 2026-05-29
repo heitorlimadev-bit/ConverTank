@@ -37,9 +37,13 @@ namespace ConverTank.Data
 
             });
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.Entity<Tanque>().HasOne(t => t.Posto).WithMany(p => p.Tanques).HasForeignKey(t => t.PostoId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Tanque>().HasOne(t => t.Fabricante).WithMany(p => p.Tanques).HasForeignKey(t => t.FabricanteId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Entidade>().ToTable("Entidades");
+            modelBuilder.Entity<Posto>().ToTable("Postos");
+            modelBuilder.Entity<Fornecedor>().ToTable("Fornecedores");
+            modelBuilder.Entity<Fabricante>().ToTable("Fabricantes");
 
         }
 

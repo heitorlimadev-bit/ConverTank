@@ -18,8 +18,7 @@ namespace ConverTank.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false)
+                    Cnpj = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,6 +42,57 @@ namespace ConverTank.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fabricantes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fabricantes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fabricantes_Entidades_Id",
+                        column: x => x.Id,
+                        principalTable: "Entidades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fornecedores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fornecedores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fornecedores_Entidades_Id",
+                        column: x => x.Id,
+                        principalTable: "Entidades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Postos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Postos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Postos_Entidades_Id",
+                        column: x => x.Id,
+                        principalTable: "Entidades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Combustiveis",
                 columns: table => new
                 {
@@ -55,9 +105,9 @@ namespace ConverTank.Migrations
                 {
                     table.PrimaryKey("PK_Combustiveis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Combustiveis_Entidades_FornecedorId",
+                        name: "FK_Combustiveis_Fornecedores_FornecedorId",
                         column: x => x.FornecedorId,
-                        principalTable: "Entidades",
+                        principalTable: "Fornecedores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -75,9 +125,9 @@ namespace ConverTank.Migrations
                 {
                     table.PrimaryKey("PK_UsuariosPostos", x => new { x.UsuarioId, x.PostoId });
                     table.ForeignKey(
-                        name: "FK_UsuariosPostos_Entidades_PostoId",
+                        name: "FK_UsuariosPostos_Postos_PostoId",
                         column: x => x.PostoId,
-                        principalTable: "Entidades",
+                        principalTable: "Postos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -116,14 +166,14 @@ namespace ConverTank.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tanques_Entidades_FabricanteId",
+                        name: "FK_Tanques_Fabricantes_FabricanteId",
                         column: x => x.FabricanteId,
-                        principalTable: "Entidades",
+                        principalTable: "Fabricantes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tanques_Entidades_PostoId",
+                        name: "FK_Tanques_Postos_PostoId",
                         column: x => x.PostoId,
-                        principalTable: "Entidades",
+                        principalTable: "Postos",
                         principalColumn: "Id");
                 });
 
@@ -202,6 +252,15 @@ namespace ConverTank.Migrations
 
             migrationBuilder.DropTable(
                 name: "Combustiveis");
+
+            migrationBuilder.DropTable(
+                name: "Fabricantes");
+
+            migrationBuilder.DropTable(
+                name: "Postos");
+
+            migrationBuilder.DropTable(
+                name: "Fornecedores");
 
             migrationBuilder.DropTable(
                 name: "Entidades");

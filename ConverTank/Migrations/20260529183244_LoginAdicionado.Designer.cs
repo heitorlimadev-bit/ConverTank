@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConverTank.Migrations
 {
     [DbContext(typeof(ConteudoBanco))]
-    [Migration("20260528214245_LoginAdicionado")]
+    [Migration("20260529183244_LoginAdicionado")]
     partial class LoginAdicionado
     {
         /// <inheritdoc />
@@ -59,22 +59,15 @@ namespace ConverTank.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Entidades");
+                    b.ToTable("Entidades", (string)null);
 
-                    b.HasDiscriminator().HasValue("Entidade");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("ConverTank.Models.Medicao", b =>
@@ -196,21 +189,21 @@ namespace ConverTank.Migrations
                 {
                     b.HasBaseType("ConverTank.Models.Entidade");
 
-                    b.HasDiscriminator().HasValue("Fabricante");
+                    b.ToTable("Fabricantes", (string)null);
                 });
 
             modelBuilder.Entity("ConverTank.Models.Fornecedor", b =>
                 {
                     b.HasBaseType("ConverTank.Models.Entidade");
 
-                    b.HasDiscriminator().HasValue("Fornecedor");
+                    b.ToTable("Fornecedores", (string)null);
                 });
 
             modelBuilder.Entity("ConverTank.Models.Posto", b =>
                 {
                     b.HasBaseType("ConverTank.Models.Entidade");
 
-                    b.HasDiscriminator().HasValue("Posto");
+                    b.ToTable("Postos", (string)null);
                 });
 
             modelBuilder.Entity("ConverTank.Models.Combustivel", b =>
@@ -283,6 +276,33 @@ namespace ConverTank.Migrations
                     b.Navigation("Posto");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("ConverTank.Models.Fabricante", b =>
+                {
+                    b.HasOne("ConverTank.Models.Entidade", null)
+                        .WithOne()
+                        .HasForeignKey("ConverTank.Models.Fabricante", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ConverTank.Models.Fornecedor", b =>
+                {
+                    b.HasOne("ConverTank.Models.Entidade", null)
+                        .WithOne()
+                        .HasForeignKey("ConverTank.Models.Fornecedor", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ConverTank.Models.Posto", b =>
+                {
+                    b.HasOne("ConverTank.Models.Entidade", null)
+                        .WithOne()
+                        .HasForeignKey("ConverTank.Models.Posto", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ConverTank.Models.Tanque", b =>

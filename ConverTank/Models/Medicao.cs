@@ -15,5 +15,7 @@
 
         public DateTime DataMedicao { get; set; }
 
+        public bool Status { get; set; } = true;
+
     }
 }

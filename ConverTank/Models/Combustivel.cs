@@ -10,6 +10,8 @@
 
         public Fornecedor Fornecedor { get; set; }
 
+        public bool Status { get; set; } = true;
+
 
     }
 }

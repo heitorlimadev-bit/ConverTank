@@ -8,6 +8,6 @@
 
         public string Cnpj { get; set; }
 
-
+        public bool Status { get; set; } = true;
     }
 }

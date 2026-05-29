@@ -12,10 +12,18 @@ namespace ConverTank.Controllers
 
         public CombustiveisController(ConteudoBanco context) 
         { 
+
             this.context = context;
         }
         public IActionResult Index()
         {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioId == null)
+            {
+                ViewBag.Erro = "Faça Login para acessar as funções";
+                return RedirectToAction("Login", "Auth");
+            }
             var combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
             return View(combustiveis);
         }

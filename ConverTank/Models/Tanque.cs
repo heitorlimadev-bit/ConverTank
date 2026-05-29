@@ -1,4 +1,6 @@
-﻿namespace ConverTank.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ConverTank.Models
 {
     public class Tanque
     {
@@ -6,7 +8,7 @@
 
         public Fabricante Fabricante { get; set; }
 
-        public int FabricanteId { get; set; }
+ 
 
         public int Volume { get; set; }
 
@@ -14,13 +16,16 @@
 
         public double Comprimento { get; set; }
 
-        public int PostoId { get; set; }
-
         public Posto Posto { get; set; }
 
+        [ForeignKey(nameof(Posto))]
+        public int PostoId { get; set; }
         public Combustivel Combustivel { get; set; }
-
+        [ForeignKey(nameof(Combustivel))]
         public int CombustivelId { get; set; }
+
+        [ForeignKey(nameof(Fabricante))]
+        public int FabricanteId { get; set; }
 
         public List<Medicao> Medicoes { get; set; } = new List<Medicao>();
 

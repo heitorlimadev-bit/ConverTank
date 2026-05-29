@@ -4,6 +4,8 @@
 
     <h1 class="display-2">Convertank</h1>
 
+    <h2>@ViewBag.Erro</h2>
+
 </div>
 
 
@@ -17,9 +19,9 @@
         <label for="formGroupExampleInput2" class="form-label">Senha</label>
         <input asp-for="Senha" type="text" class="form-control" id="formGroupExampleInput2">
     </div>
-    <div class="d-grid">
+    <div class="d-grid gap-2">
 
-        <button class="btn btn-primary" type="submit">Salvar</button>
+        <button class="btn btn-primary" type="submit">Entrar</button>
         <a class="btn btn-secondary" asp-action="NovoAcesso" asp-controller="Auth">Novo Acesso</a>
 
     </div>

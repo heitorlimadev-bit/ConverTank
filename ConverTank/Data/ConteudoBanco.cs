@@ -1,5 +1,6 @@
 ﻿using ConverTank.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ConverTank.Data
 {
@@ -36,6 +37,10 @@ namespace ConverTank.Data
 
             });
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<Tanque>().HasOne(t => t.Posto).WithMany(p => p.Tanques).HasForeignKey(t => t.PostoId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Tanque>().HasOne(t => t.Fabricante).WithMany(p => p.Tanques).HasForeignKey(t => t.FabricanteId).OnDelete(DeleteBehavior.NoAction);
+
         }
 
     }

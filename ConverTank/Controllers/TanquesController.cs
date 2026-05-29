@@ -17,6 +17,14 @@ namespace ConverTank.Controllers
 
         public IActionResult Index(int id)
         {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioId == null)
+            {
+                ViewBag.Erro = "Faça Login para acessar as funções";
+                return RedirectToAction("Login", "Auth");
+            }
+
             var tanques = context.Tanques.Include(f => f.Fabricante).Where(t => t.PostoId == id).ToList();
 
             ViewBag.PostoId = id;

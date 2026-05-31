@@ -19,7 +19,7 @@ namespace ConverTank.Controllers
         public IActionResult Login()
         {
 
-            
+            HttpContext.Session.SetString("Administrador", "false");
             return View();
 
         }

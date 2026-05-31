@@ -25,7 +25,7 @@ namespace ConverTank.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var tanques = context.Tanques.Include(f => f.Fabricante).Where(t => t.PostoId == id).ToList();
+            var tanques = context.Tanques.Where(t => t.Status == true).Include(f => f.Fabricante).Where(t => t.PostoId == id).ToList();
 
             ViewBag.PostoId = id;
 
@@ -34,11 +34,22 @@ namespace ConverTank.Controllers
 
         public IActionResult Adicionar(int postoId)
         {
-            ViewBag.Combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
-            ViewBag.Fabricantes = context.Fabricantes.ToList();
-            ViewBag.PostoId = postoId;
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
 
-            return View();
+                ViewBag.Combustiveis = context.Combustiveis.Where(c => c.Status == true).Include(c => c.Fornecedor).ToList();
+                ViewBag.Fabricantes = context.Fabricantes.Where(f => f.Status == true).ToList();
+                ViewBag.PostoId = postoId;
+
+                return View();
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
+
 
         }
         [HttpPost]
@@ -54,11 +65,22 @@ namespace ConverTank.Controllers
         }
         public IActionResult Editar(int id)
         {
-            var tanque = context.Tanques.Find(id);
-            ViewBag.Combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
-            ViewBag.Fabricantes = context.Fabricantes.ToList();
-            ViewBag.PostoId = tanque.PostoId;
-            return View(tanque);
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                var tanque = context.Tanques.Find(id);
+                ViewBag.Combustiveis = context.Combustiveis.Where(c => c.Status == true).Include(c => c.Fornecedor).ToList();
+                ViewBag.Fabricantes = context.Fabricantes.Where(f => f.Status == true).ToList();
+                ViewBag.PostoId = tanque.PostoId;
+                return View(tanque);
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
         
         }
         [HttpPost]

@@ -24,15 +24,21 @@ namespace ConverTank.Controllers
                 ViewBag.Erro = "Faça Login para acessar as funções";
                 return RedirectToAction("Login", "Auth");
             }
-            var combustiveis = context.Combustiveis.Include(c => c.Fornecedor).ToList();
+            var combustiveis = context.Combustiveis.Where(c => c.Status == true).Include(c => c.Fornecedor).ToList();
             return View(combustiveis);
         }
         public IActionResult Adicionar()
         {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
 
-            ViewBag.Fornecedores = context.Fornecedores.ToList();
-            return View();
-        
+                ViewBag.Fornecedores = context.Fornecedores.Where(f => f.Status == true).ToList();
+                return View();
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
         }
         [HttpPost]
         public IActionResult Adicionar(Combustivel combustivel)
@@ -44,10 +50,23 @@ namespace ConverTank.Controllers
         }
         public IActionResult Editar(int Id)
         {
-            var combustível = context.Combustiveis.Find(Id);
-            ViewBag.Fornecedores = context.Fornecedores.ToList();
 
-            return View(combustível);
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+
+                var combustível = context.Combustiveis.Find(Id);
+                ViewBag.Fornecedores = context.Fornecedores.Where(f => f.Status == true).ToList();
+
+                return View(combustível);
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
+
         }
         [HttpPost]
         public IActionResult Editar(Combustivel combustivel)
@@ -59,11 +78,31 @@ namespace ConverTank.Controllers
         }
         public IActionResult Apagar(int Id)
         {
-            var combustível = context.Combustiveis.Find(Id);
-            context.Combustiveis.Remove(combustível);
-            context.SaveChanges();
-            
-            return RedirectToAction("Index");
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+
+                var combustivel = context.Combustiveis.Find(Id);
+
+                combustivel.Status = false;
+                context.Combustiveis.Update(combustivel);
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
+
+
+
+
+
         }
         
     }

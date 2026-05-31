@@ -1,0 +1,62 @@
+﻿@model List<Usuario>
+
+<div class="text-center">
+
+    <h1 class="display-2">
+        Gerenciar Permissões
+    </h1>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Login</th>
+                        <th>Administrador</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+
+                            <td>@usuario.Id</td>
+                            <td>@usuario.Nome</td>
+                            <td>@usuario.Login</td>
+
+                            <td>
+                                @(usuario.Administrador ? "Sim" : "Não")
+                            </td>
+
+                            <td>
+
+                                <a class="btn btn-primary"
+                                       asp-action="PermissoesUsuario"
+                                       asp-route-id="@usuario.Id">
+
+                                    Acessar Usuário
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

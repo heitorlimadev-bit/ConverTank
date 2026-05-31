@@ -22,12 +22,22 @@ namespace ConverTank.Controllers
                 ViewBag.Erro = "Faça Login para acessar as funções";
                 return RedirectToAction("Login", "Auth");
             }
-            var fornecedores = context.Fornecedores.ToList();
+            var fornecedores = context.Fornecedores.Where(f => f.Status == true).ToList();
             return View(fornecedores);
         }
         public IActionResult Adicionar()
         {
-            return View();
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                return View();
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
         }
         [HttpPost]
         public IActionResult Adicionar(Fornecedor fornecedor) 
@@ -39,8 +49,19 @@ namespace ConverTank.Controllers
         }
         public IActionResult Editar(int Id)
         {
-            var fornecedor = context.Fornecedores.Find(Id);
-            return View(fornecedor); 
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                var fornecedor = context.Fornecedores.Find(Id);
+                return View(fornecedor);
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
 
         }
         [HttpPost]
@@ -54,10 +75,31 @@ namespace ConverTank.Controllers
         }
         public IActionResult Apagar(int Id)
         {
-            var fornecedor = context.Fornecedores.Find(Id);
-            context.Fornecedores.Remove(fornecedor);
-            context.SaveChanges();
-            return RedirectToAction("Index");
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                var fornecedor = context.Fornecedores.Find(Id);
+                var combustivelFornecedor = context.Combustiveis.Where(c => c.FornecedorId == Id);
+
+                foreach (Combustivel c in combustivelFornecedor)
+                {
+
+                    c.Status = false;
+
+                }
+
+                fornecedor.Status = false;
+                context.Fornecedores.Update(fornecedor);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
 
         }
     }

@@ -16,23 +16,43 @@ namespace ConverTank.Controllers
 
         public IActionResult Index()
         {
-
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
             if (usuarioId == null)
             {
-                ViewBag.Erro = "Faça Login para acessar as funções";
                 return RedirectToAction("Login", "Auth");
             }
 
-            var postos = context.Postos.ToList();
-            return View(postos);
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
 
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            if (usuario.Administrador == true )
+            {
+                var todosPostos = context.Postos.Where(p => p.Status == true).ToList();
+
+                return View(todosPostos);
+            }
+
+            var postosPermitidos = context.UsuariosPostos.Where(up => up.UsuarioId == usuarioId).Select(up => up.Posto).Where(p => p.Status == true).ToList();
+
+            return View(postosPermitidos);
         }
         public IActionResult Adicionar()
         {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
 
-            return View();
+                return View();
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
 
         }
         [HttpPost]
@@ -48,9 +68,22 @@ namespace ConverTank.Controllers
         }
         public IActionResult Editar(int id) 
         {
-            var posto = context.Postos.Find(id);
+
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                var posto = context.Postos.Find(id);
 
                 return View(posto);
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
+
         }
         [HttpPost]
         public IActionResult Editar(Posto posto)
@@ -63,10 +96,23 @@ namespace ConverTank.Controllers
         }
         public IActionResult Apagar(int Id)
         {
-            var posto = context.Postos.Find(Id);
-            context.Postos.Remove(posto);
-            context.SaveChanges();
-            return RedirectToAction("Index");
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                var posto = context.Postos.Find(Id);
+                posto.Status = false;
+                context.Postos.Update(posto);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
+
 
         }
     }

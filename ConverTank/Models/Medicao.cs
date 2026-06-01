@@ -5,7 +5,7 @@
 
         public int Id { get; set; }
 
-        public int Altura { get; set; }
+        public double Altura { get; set; }
 
         public double Volume { get; set; }
 

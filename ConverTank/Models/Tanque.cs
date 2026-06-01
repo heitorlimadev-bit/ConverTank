@@ -6,9 +6,7 @@ namespace ConverTank.Models
     {
         public int Id { get; set; }
         public int Volume { get; set; }
-
         public double Raio { get; set; }
-
         public double Comprimento { get; set; }
 
         public Posto Posto { get; set; }

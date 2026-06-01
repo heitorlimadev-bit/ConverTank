@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConverTank.Migrations
 {
     [DbContext(typeof(ConteudoBanco))]
-    [Migration("20260529183244_LoginAdicionado")]
-    partial class LoginAdicionado
+    [Migration("20260601170928_Teste")]
+    partial class Teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace ConverTank.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FornecedorId");
@@ -63,6 +66,9 @@ namespace ConverTank.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Entidades", (string)null);
@@ -83,6 +89,9 @@ namespace ConverTank.Migrations
 
                     b.Property<DateTime>("DataMedicao")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TanqueId")
                         .HasColumnType("int");
@@ -120,6 +129,9 @@ namespace ConverTank.Migrations
                     b.Property<double>("Raio")
                         .HasColumnType("float");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Volume")
                         .HasColumnType("int");
 
@@ -156,6 +168,9 @@ namespace ConverTank.Migrations
                     b.Property<string>("Senha")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

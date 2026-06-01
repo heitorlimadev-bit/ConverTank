@@ -81,8 +81,8 @@ namespace ConverTank.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Altura")
-                        .HasColumnType("int");
+                    b.Property<double>("Altura")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("DataMedicao")
                         .HasColumnType("datetime2");

@@ -94,5 +94,27 @@ namespace ConverTank.Controllers
             return RedirectToAction("index", new { id = tanque.PostoId });
 
         }
+        public IActionResult Apagar(int id)
+        {
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario.Administrador == true)
+            {
+
+                var tanque = context.Tanques.Find(id);
+
+                tanque.Status = false;
+                context.Update(tanque);
+                context.SaveChanges();
+
+                return RedirectToAction("index", new { id = tanque.PostoId });
+
+            }
+            else { return RedirectToAction("Login", "Auth"); }
+
+
+
+        }
     }
 }

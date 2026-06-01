@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConverTank.Migrations
 {
     /// <inheritdoc />
-    public partial class LoginAdicionado : Migration
+    public partial class Teste : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,8 @@ namespace ConverTank.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cnpj = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Cnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +35,8 @@ namespace ConverTank.Migrations
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Administrador = table.Column<bool>(type: "bit", nullable: false)
+                    Administrador = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,7 +101,8 @@ namespace ConverTank.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FornecedorId = table.Column<int>(type: "int", nullable: false)
+                    FornecedorId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,7 +157,8 @@ namespace ConverTank.Migrations
                     Comprimento = table.Column<double>(type: "float", nullable: false),
                     PostoId = table.Column<int>(type: "int", nullable: false),
                     CombustivelId = table.Column<int>(type: "int", nullable: false),
-                    FabricanteId = table.Column<int>(type: "int", nullable: false)
+                    FabricanteId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,7 +190,8 @@ namespace ConverTank.Migrations
                     Altura = table.Column<int>(type: "int", nullable: false),
                     Volume = table.Column<double>(type: "float", nullable: false),
                     TanqueId = table.Column<int>(type: "int", nullable: false),
-                    DataMedicao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DataMedicao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

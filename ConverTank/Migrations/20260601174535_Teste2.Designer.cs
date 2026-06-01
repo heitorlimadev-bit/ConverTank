@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConverTank.Migrations
 {
     [DbContext(typeof(ConteudoBanco))]
-    [Migration("20260531144858_softdelete_teste")]
-    partial class softdelete_teste
+    [Migration("20260601174535_Teste2")]
+    partial class Teste2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,8 +84,8 @@ namespace ConverTank.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Altura")
-                        .HasColumnType("int");
+                    b.Property<double>("Altura")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("DataMedicao")
                         .HasColumnType("datetime2");

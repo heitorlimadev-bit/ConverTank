@@ -1,30 +1,46 @@
-﻿@model LoginViewModel
+@model LoginViewModel
 
-<div class="text-center">
+@{
+    ViewData["Title"] = "Entrar";
+}
 
-    <h1 class="display-2">Convertank</h1>
-
-    <h2>@ViewBag.Erro</h2>
-
+<div class="text-center my-4">
+    <h1 class="display-2">
+        <i class="bi bi-droplet-fill text-warning"></i> ConverTank
+    </h1>
+    <p class="text-secondary">Painel de Monitoramento de Combustíveis</p>
 </div>
 
+<form asp-action="Login" method="post" class="shadow">
+    <h3 class="text-center mb-4 text-white">Login</h3>
 
-<form asp-action="Login" method="post">
+    @if (!string.IsNullOrEmpty(ViewBag.Erro))
+    {
+        <div class="alert alert-danger border-danger bg-dark text-danger d-flex align-items-center gap-2 mb-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <div>@ViewBag.Erro</div>
+        </div>
+    }
 
     <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Login</label>
-        <input asp-for="Login" type="text" class="form-control" id="formGroupExampleInput">
+        <label for="loginInput" class="form-label">Usuário / Login</label>
+        <div class="input-group">
+            <span class="input-group-text bg-secondary border-color text-secondary">
+                <i class="bi bi-person-fill"></i>
+            </span>
+            <input asp-for="Login" type="text" class="form-control" id="loginInput" placeholder="Digite seu usuário" required>
+        </div>
     </div>
     <div class="mb-3">
-        <label for="formGroupExampleInput2" class="form-label">Senha</label>
-        <input asp-for="Senha" type="text" class="form-control" id="formGroupExampleInput2">
+        <label for="passwordInput" class="form-label">Senha</label>
+        <input asp-for="Senha" type="password" class="form-control" id="passwordInput" placeholder="Digite sua senha" required>
     </div>
-    <div class="d-grid gap-2">
-
-        <button class="btn btn-primary" type="submit">Entrar</button>
-        <a class="btn btn-secondary" asp-action="NovoAcesso" asp-controller="Auth">Novo Acesso</a>
-
+    <div class="d-grid gap-2 mt-4">
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-box-arrow-in-right"></i> Entrar
+        </button>
+        <a class="btn btn-secondary" asp-action="NovoAcesso" asp-controller="Auth">
+            <i class="bi bi-person-plus-fill"></i> Solicitar Novo Acesso
+        </a>
     </div>
-
-   
-</form>
+</form>

@@ -1,62 +1,111 @@
-﻿<div class="text-center">
+@model List<Medicao>
 
+@{
+    ViewData["Title"] = "Medições do Tanque";
+    var tanque = ViewBag.Tanque as Tanque;
+}
+
+<div class="text-center">
     <h1 class="display-2">
-
-        Mediçoes do Tanque Selecionado
-
+        <i class="bi bi-speedometer2 text-warning me-2"></i> Medições do Tanque
     </h1>
 
-    
+    @if (tanque != null)
+    {
+        <div class="card shadow border-0 mb-4 text-start">
+            <div class="card-body py-3">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <span class="text-secondary d-block small">TANQUE</span>
+                        <strong class="fs-5 text-white">#@tanque.Id</strong>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary d-block small">COMBUSTÍVEL</span>
+                        <span class="badge bg-warning text-dark px-2 py-1">
+                            <i class="bi bi-droplet-fill me-1"></i> @(tanque.Combustivel?.Nome ?? "Não Definido")
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary d-block small">CAPACIDADE NOMINAL</span>
+                        <strong class="text-white">@tanque.Volume.ToString("N0") L</strong>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary d-block small">DIMENSÕES</span>
+                        <span class="text-white">D: @tanque.Diametro.ToString("N2")m | L: @tanque.Comprimento.ToString("N2")m</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="card shadow border-0">
-
         <div class="card-body">
-
             <div class="table-responsive">
-
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Data</th>
-                            <th scope="col">Altura</th>
-                            <th scope="col">Volume</th>
-                            <th scope="col"></th>
+                            <th scope="col">Data e Hora</th>
+                            <th scope="col">Altura da Régua (cm)</th>
+                            <th scope="col">Volume Calculado (L)</th>
+                            <th scope="col">Ocupação (%)</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-secondary">
+                                    Nenhuma medição registrada para este tanque ainda.
+                                </td>
+                            </tr>
+                        }
                         @foreach (var medicao in Model)
                         {
-            
+                            var perc = (tanque != null && tanque.Volume > 0)
+                                ? Math.Min(100.0, Math.Round((medicao.Volume / tanque.Volume) * 100.0, 1))
+                                : 0.0;
                             <tr>
                                 <th scope="row">@medicao.Id</th>
-                                <td>@medicao.DataMedicao</td>
-                                <td>@medicao.Altura</td>
-                                <td>@medicao.Volume</td>
-
-
+                                <td>@medicao.DataMedicao.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@medicao.Altura.ToString("N1") cm</td>
+                                <td><strong class="text-warning">@medicao.Volume.ToString("N2") L</strong></td>
                                 <td>
-                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@medicao.Id">Editar</a>
-                                    <a type="button" class="btn btn-danger" asp-action="Apagar" asp-route-id="@medicao.Id">Apagar</a>
+                                    <span class="badge @(perc >= 90 ? "bg-danger" : perc >= 50 ? "bg-success" : "bg-info") text-white">
+                                        @perc.ToString("F1")%
+                                    </span>
                                 </td>
-
-                    
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" asp-action="Editar" asp-route-id="@medicao.Id">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Apagar" asp-route-id="@medicao.Id">
+                                        <i class="bi bi-trash"></i> Apagar
+                                    </a>
+                                </td>
                             </tr>
-
                         }
-
-
                     </tbody>
                 </table>
-                <div class="d-grid gap-2">
-                    <a class="btn btn-primary" type="button" asp-controller="Medicoes" asp-action="Adicionar" asp-route-tanqueId="@ViewBag.TanqueId">Realizar medicao</a>
-                    <a class="btn btn-secondary" type="button" asp-controller="Postos" asp-action="Index">Voltar</a>
+                <div class="d-grid gap-2 mt-4">
+                    <a class="btn btn-primary" asp-controller="Medicoes" asp-action="Adicionar" asp-route-tanqueId="@ViewBag.TanqueId">
+                        <i class="bi bi-plus-circle"></i> Realizar Nova Medição
+                    </a>
+                    @if (ViewBag.PostoId != null)
+                    {
+                        <a class="btn btn-secondary" asp-controller="Tanques" asp-action="Index" asp-route-id="@ViewBag.PostoId">
+                            <i class="bi bi-arrow-left"></i> Voltar para Tanques
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-secondary" asp-controller="Postos" asp-action="Index">
+                            <i class="bi bi-arrow-left"></i> Voltar para Postos
+                        </a>
+                    }
                 </div>
             </div>
-
         </div>
     </div>
-
-
-    
 </div>

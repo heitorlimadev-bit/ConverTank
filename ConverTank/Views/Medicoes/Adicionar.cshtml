@@ -1,22 +1,42 @@
-﻿@model Medicao
+@model Medicao
 
+@{
+    ViewData["Title"] = "Nova Medição";
+}
 
-<div class="text-center">
-
-    <h1 class="display-2">Nova Medicao</h1>
+<div class="text-center my-4">
+    <h1 class="display-2">
+        <i class="bi bi-rulers text-warning"></i> Registrar Medição
+    </h1>
+    <p class="text-secondary">Informe o nível de altura do líquido na régua (cm) para cálculo volumétrico</p>
+    @if (ViewBag.Tanque != null)
+    {
+        <div class="badge bg-secondary px-3 py-2 fs-6">
+            Tanque #@ViewBag.Tanque.Id - @(ViewBag.Tanque.Combustivel?.Nome ?? "Combustível") | Capacidade: @ViewBag.Tanque.Volume L | Diâmetro: @ViewBag.Tanque.Diametro.ToString("N2") m
+        </div>
+    }
 </div>
 
-<form asp-action="Adicionar" method="post">
-
+<form asp-action="Adicionar" method="post" class="shadow">
     <input type="hidden" asp-for="TanqueId" value="@ViewBag.TanqueId" />
 
     <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Altura</label>
-        <input asp-for="Altura" type="text" class="form-control" id="formGroupExampleInput">
+        <label for="alturaInput" class="form-label">Altura do Líquido (cm)</label>
+        <div class="input-group">
+            <span class="input-group-text bg-secondary border-color text-secondary">
+                <i class="bi bi-water"></i>
+            </span>
+            <input asp-for="Altura" type="number" step="any" min="0" class="form-control" id="alturaInput" placeholder="Ex: 115" required>
+        </div>
+        <small class="text-secondary mt-1 d-block">Medição da régua em centímetros (cm). O cálculo resultará no volume em litros.</small>
     </div>
-    <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="submit"> Salvar </button>
-        <a class="btn btn-secondary" type="button" asp-controller="Postos" asp-action="Index">Voltar </a>
+    
+    <div class="d-grid gap-2 mt-4">
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-check-lg"></i> Salvar e Calcular Volume
+        </button>
+        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@ViewBag.TanqueId">
+            <i class="bi bi-arrow-left"></i> Voltar para Medições
+        </a>
     </div>
-   
 </form>

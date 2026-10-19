@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConverTank.Migrations
 {
     [DbContext(typeof(ConteudoBanco))]
-    [Migration("20260601174535_Teste2")]
-    partial class Teste2
+    [Migration("20261014134442_unmedidas")]
+    partial class unmedidas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,14 +120,14 @@ namespace ConverTank.Migrations
                     b.Property<double>("Comprimento")
                         .HasColumnType("float");
 
+                    b.Property<double>("Diametro")
+                        .HasColumnType("float");
+
                     b.Property<int>("FabricanteId")
                         .HasColumnType("int");
 
                     b.Property<int>("PostoId")
                         .HasColumnType("int");
-
-                    b.Property<double>("Raio")
-                        .HasColumnType("float");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");

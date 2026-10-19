@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConverTank.Migrations
 {
     /// <inheritdoc />
-    public partial class Teste : Migration
+    public partial class unmedidas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -153,7 +153,7 @@ namespace ConverTank.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Volume = table.Column<int>(type: "int", nullable: false),
-                    Raio = table.Column<double>(type: "float", nullable: false),
+                    Diametro = table.Column<double>(type: "float", nullable: false),
                     Comprimento = table.Column<double>(type: "float", nullable: false),
                     PostoId = table.Column<int>(type: "int", nullable: false),
                     CombustivelId = table.Column<int>(type: "int", nullable: false),
@@ -187,7 +187,7 @@ namespace ConverTank.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Altura = table.Column<int>(type: "int", nullable: false),
+                    Altura = table.Column<double>(type: "float", nullable: false),
                     Volume = table.Column<double>(type: "float", nullable: false),
                     TanqueId = table.Column<int>(type: "int", nullable: false),
                     DataMedicao = table.Column<DateTime>(type: "datetime2", nullable: false),

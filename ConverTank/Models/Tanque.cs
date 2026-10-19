@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ConverTank.Models
 {
@@ -8,6 +8,13 @@ namespace ConverTank.Models
         public int Volume { get; set; }
         public double Raio { get; set; }
         public double Comprimento { get; set; }
+
+        [NotMapped]
+        public double Diametro
+        {
+            get => Math.Round(Raio * 2.0, 4);
+            set => Raio = value / 2.0;
+        }
 
         public Posto Posto { get; set; }
         [ForeignKey(nameof(Posto))]
@@ -24,8 +31,5 @@ namespace ConverTank.Models
         public bool Status { get; set; } = true;
 
         public List<Medicao> Medicoes { get; set; } = new List<Medicao>();
-
-
-
     }
 }

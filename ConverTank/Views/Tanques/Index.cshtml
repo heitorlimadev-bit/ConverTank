@@ -1,62 +1,73 @@
-﻿<div class="text-center">
+@model List<Tanque>
 
+@{
+    ViewData["Title"] = "Tanques";
+}
+
+<div class="text-center">
     <h1 class="display-2">
-
-        Tanques
-
-
+        <i class="bi bi-fuel-pump text-warning me-2"></i> Tanques de Armazenamento
     </h1>
+    @if (ViewBag.Posto != null)
+    {
+        <p class="text-secondary fs-5">Posto: <strong class="text-white">@ViewBag.Posto.Nome</strong></p>
+    }
 
-    
     <div class="card shadow border-0">
-
         <div class="card-body">
-
             <div class="table-responsive">
-
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Fabricante</th>
-                            <th scope="col">Volume</th>
-                            <th scope="col"></th>
+                            <th scope="col">Combustível</th>
+                            <th scope="col">Diâmetro (m)</th>
+                            <th scope="col">Raio (m)</th>
+                            <th scope="col">Comprimento (m)</th>
+                            <th scope="col">Volume (L)</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach (var tanque in Model)
                         {
-            
                             <tr>
                                 <th scope="row">@tanque.Id</th>
-                                <td>@tanque.Fabricante.Nome</td>
-                                <td>@tanque.Volume</td>
-
-
+                                <td>@(tanque.Fabricante?.Nome ?? "-")</td>
                                 <td>
-                                    <a type="button" class="btn btn-primary" asp-controller="Medicoes" asp-action="Index" asp-route-id="@tanque.Id" asp-for"">Vizualizar Tanque</a>
-                                    <a type="button" class="btn btn-secondary" asp-action="Editar" asp-route-id="@tanque.Id">Editar</a>
-                                    <a type="button" class="btn btn-danger" asp-action="Apagar" asp-route-id="@tanque.Id">Apagar</a>
+                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                        <i class="bi bi-droplet-fill me-1"></i> @(tanque.Combustivel?.Nome ?? "Não Definido")
+                                    </span>
                                 </td>
-
-                    
+                                <td>@tanque.Diametro.ToString("N2") m</td>
+                                <td>@tanque.Raio.ToString("N2") m</td>
+                                <td>@tanque.Comprimento.ToString("N2") m</td>
+                                <td>@tanque.Volume.ToString("N0") L</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" asp-controller="Medicoes" asp-action="Index" asp-route-id="@tanque.Id">
+                                        <i class="bi bi-eye"></i> Medições
+                                    </a>
+                                    <a class="btn btn-secondary btn-sm" asp-action="Editar" asp-route-id="@tanque.Id">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Apagar" asp-route-id="@tanque.Id">
+                                        <i class="bi bi-trash"></i> Apagar
+                                    </a>
+                                </td>
                             </tr>
-
                         }
-
-
                     </tbody>
                 </table>
-                <div class="d-grid gap-2">
-                    <a class="btn btn-primary" type="button" asp-controller="Tanques" asp-action="Adicionar" asp-route-postoId="@ViewBag.PostoId">Adicionar Tanque</a>
-                    <a class="btn btn-secondary" type="button" asp-controller="Postos" asp-action="Index">Voltar</a>
+                <div class="d-grid gap-2 mt-4">
+                    <a class="btn btn-primary" asp-controller="Tanques" asp-action="Adicionar" asp-route-postoId="@ViewBag.PostoId">
+                        <i class="bi bi-plus-circle"></i> Adicionar Tanque
+                    </a>
+                    <a class="btn btn-secondary" asp-controller="Postos" asp-action="Index">
+                        <i class="bi bi-arrow-left"></i> Voltar para Postos
+                    </a>
                 </div>
             </div>
-
         </div>
     </div>
-
-
-    
 </div>

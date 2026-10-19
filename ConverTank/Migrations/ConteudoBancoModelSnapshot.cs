@@ -117,14 +117,14 @@ namespace ConverTank.Migrations
                     b.Property<double>("Comprimento")
                         .HasColumnType("float");
 
+                    b.Property<double>("Diametro")
+                        .HasColumnType("float");
+
                     b.Property<int>("FabricanteId")
                         .HasColumnType("int");
 
                     b.Property<int>("PostoId")
                         .HasColumnType("int");
-
-                    b.Property<double>("Raio")
-                        .HasColumnType("float");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");

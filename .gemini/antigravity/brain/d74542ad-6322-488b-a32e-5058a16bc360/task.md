@@ -1,0 +1,13 @@
+- [x] Create and configure the custom CSS theme (`site.css`) for the dark petroleum industrial theme
+- [x] Configure `_Layout.cshtml` with Google Fonts, Bootstrap Icons, and the redesigned dark navigation bar
+- [x] Write dynamic JavaScript input masks (CNPJ and Password toggle) in `site.js`
+- [x] Update form views for Auth (Login & NovoAcesso) with `required` and password mask toggles
+- [x] Update form views for Combustiveis (Adicionar & Editar) with `required`
+- [x] Update form views for Fabricantes (Adicionar & Editar) with `required` and CNPJ class
+- [x] Update form views for Fornecedores (Adicionar & Editar) with `required` and CNPJ class
+- [x] Update form views for Postos (Adicionar & Editar) with `required` and CNPJ class
+- [x] Update form views for Tanques (Adicionar & Editar) with `required`
+- [x] Update form views for Medicoes (Adicionar & Editar) with `required`
+- [x] Update `Home/Index.cshtml` to serve as a high-end petroleum dashboard
+- [x] Run test build to confirm everything compiles and runs perfectly
+- [x] Create verification walkthrough.md

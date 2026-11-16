@@ -3,7 +3,17 @@ using ConverTank.Data;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+// Fora do ambiente de desenvolvimento (versão publicada), usa a pasta do próprio executável
+// como raiz: assim wwwroot (CSS/JS) e appsettings.json são encontrados de onde quer que o
+// ConverTank.exe seja iniciado (atalho, serviço, outra pasta no terminal).
+var emDesenvolvimento = string.Equals(
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "Development", StringComparison.OrdinalIgnoreCase);
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = emDesenvolvimento ? null : AppContext.BaseDirectory
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ConteudoBanco>(options => 
@@ -16,6 +26,13 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+
+// Aplica automaticamente as migrations pendentes ao iniciar (dispensa o "dotnet ef database update")
+using (var scope = app.Services.CreateScope())
+{
+    var banco = scope.ServiceProvider.GetRequiredService<ConteudoBanco>();
+    banco.Database.Migrate();
+}
 
 var defaultCulture = new CultureInfo("pt-BR");
 defaultCulture.NumberFormat.NumberDecimalSeparator = ".";

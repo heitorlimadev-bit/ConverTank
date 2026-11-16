@@ -25,30 +25,31 @@ namespace ConverTank.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var tanque = context.Tanques
-                .Include(t => t.Posto)
-                .Include(t => t.Combustivel)
-                .Include(t => t.Fabricante)
-                .FirstOrDefault(t => t.Id == Id);
+            // Id = PostoTanque (tanque instalado no posto)
+            var postoTanque = context.PostosTanques
+                .Include(pt => pt.Posto)
+                .Include(pt => pt.Combustivel)
+                .Include(pt => pt.Tanque).ThenInclude(t => t.Fabricante)
+                .FirstOrDefault(pt => pt.Id == Id);
 
-            if (tanque == null)
+            if (postoTanque == null)
             {
                 return RedirectToAction("Index", "Postos");
             }
 
             var medicoes = context.Medicoes
-                .Where(t => t.TanqueId == Id && t.Status == true)
+                .Where(m => m.PostoTanqueId == Id && m.Status == true)
                 .OrderByDescending(m => m.DataMedicao)
                 .ToList();
 
-            ViewBag.TanqueId = Id;
-            ViewBag.Tanque = tanque;
-            ViewBag.PostoId = tanque.PostoId;
+            ViewBag.PostoTanqueId = Id;
+            ViewBag.PostoTanque = postoTanque;
+            ViewBag.PostoId = postoTanque.PostoId;
 
             return View(medicoes);
         }
 
-        public IActionResult Adicionar(int TanqueId)
+        public IActionResult Adicionar(int PostoTanqueId)
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
@@ -58,18 +59,19 @@ namespace ConverTank.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var tanque = context.Tanques
-                .Include(t => t.Combustivel)
-                .Include(t => t.Fabricante)
-                .FirstOrDefault(t => t.Id == TanqueId);
+            var postoTanque = context.PostosTanques
+                .Include(pt => pt.Posto)
+                .Include(pt => pt.Combustivel)
+                .Include(pt => pt.Tanque).ThenInclude(t => t.Fabricante)
+                .FirstOrDefault(pt => pt.Id == PostoTanqueId);
 
-            if (tanque == null)
+            if (postoTanque == null)
             {
                 return RedirectToAction("Index", "Postos");
             }
 
-            ViewBag.TanqueId = TanqueId;
-            ViewBag.Tanque = tanque;
+            ViewBag.PostoTanqueId = PostoTanqueId;
+            ViewBag.PostoTanque = postoTanque;
 
             return View();
         }
@@ -85,13 +87,16 @@ namespace ConverTank.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var tanque = context.Tanques.FirstOrDefault(t => t.Id == medicao.TanqueId);
+            var postoTanque = context.PostosTanques
+                .Include(pt => pt.Tanque)
+                .FirstOrDefault(pt => pt.Id == medicao.PostoTanqueId);
 
-            if (tanque == null)
+            if (postoTanque == null)
             {
                 return RedirectToAction("Index", "Postos");
             }
 
+            var tanque = postoTanque.Tanque;
             medicao.Volume = TanqueService.CalcularVolume(tanque.Raio, tanque.Comprimento, medicao.Altura);
             medicao.DataMedicao = DateTime.Now;
             medicao.Status = true;
@@ -99,7 +104,7 @@ namespace ConverTank.Controllers
             context.Medicoes.Add(medicao);
             context.SaveChanges();
 
-            return RedirectToAction("Index", new { id = medicao.TanqueId });
+            return RedirectToAction("Index", new { id = medicao.PostoTanqueId });
         }
 
         public IActionResult Editar(int id)
@@ -112,7 +117,9 @@ namespace ConverTank.Controllers
             }
 
             var medicao = context.Medicoes
-                .Include(m => m.Tanque)
+                .Include(m => m.PostoTanque).ThenInclude(pt => pt.Tanque)
+                .Include(m => m.PostoTanque).ThenInclude(pt => pt.Combustivel)
+                .Include(m => m.PostoTanque).ThenInclude(pt => pt.Posto)
                 .FirstOrDefault(m => m.Id == id && m.Status == true);
 
             if (medicao == null)
@@ -120,8 +127,8 @@ namespace ConverTank.Controllers
                 return RedirectToAction("Index", "Postos");
             }
 
-            ViewBag.TanqueId = medicao.TanqueId;
-            ViewBag.Tanque = medicao.Tanque;
+            ViewBag.PostoTanqueId = medicao.PostoTanqueId;
+            ViewBag.PostoTanque = medicao.PostoTanque;
 
             return View(medicao);
         }
@@ -142,7 +149,10 @@ namespace ConverTank.Controllers
                 return RedirectToAction("Index", "Postos");
             }
 
-            var tanque = context.Tanques.FirstOrDefault(t => t.Id == medicaoBanco.TanqueId);
+            var tanque = context.PostosTanques
+                .Where(pt => pt.Id == medicaoBanco.PostoTanqueId)
+                .Select(pt => pt.Tanque)
+                .FirstOrDefault();
             if (tanque == null)
             {
                 return RedirectToAction("Index", "Postos");
@@ -152,7 +162,7 @@ namespace ConverTank.Controllers
             medicaoBanco.Volume = TanqueService.CalcularVolume(tanque.Raio, tanque.Comprimento, medicao.Altura);
             context.SaveChanges();
 
-            return RedirectToAction("Index", new { id = medicaoBanco.TanqueId });
+            return RedirectToAction("Index", new { id = medicaoBanco.PostoTanqueId });
         }
 
         public IActionResult Apagar(int id)
@@ -170,7 +180,7 @@ namespace ConverTank.Controllers
                 medicao.Status = false;
                 context.Update(medicao);
                 context.SaveChanges();
-                return RedirectToAction("Index", new { id = medicao.TanqueId });
+                return RedirectToAction("Index", new { id = medicao.PostoTanqueId });
             }
 
             return RedirectToAction("Index", "Postos");

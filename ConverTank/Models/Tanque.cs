@@ -2,9 +2,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ConverTank.Models
 {
+    /// <summary>
+    /// MODELO de tanque (especificação física): dimensões, capacidade e fabricante.
+    /// Um mesmo modelo pode estar instalado em vários postos e várias vezes no mesmo posto —
+    /// cada instalação é um <see cref="PostoTanque"/>.
+    /// </summary>
     public class Tanque
     {
         public int Id { get; set; }
+
+        /// <summary>Nome livre para identificar o modelo (ex.: "15 m³ Zeppini bipartido").</summary>
+        public string? Nome { get; set; }
+
+        /// <summary>Volume nominal em litros.</summary>
         public int Volume { get; set; }
         public double Raio { get; set; }
         public double Comprimento { get; set; }
@@ -16,20 +26,23 @@ namespace ConverTank.Models
             set => Raio = value / 2.0;
         }
 
-        public Posto Posto { get; set; }
-        [ForeignKey(nameof(Posto))]
-        public int PostoId { get; set; }
-
-        public Combustivel Combustivel { get; set; }
-        [ForeignKey(nameof(Combustivel))]
-        public int CombustivelId { get; set; }
-
         public Fabricante Fabricante { get; set; }
         [ForeignKey(nameof(Fabricante))]
         public int FabricanteId { get; set; }
 
         public bool Status { get; set; } = true;
 
-        public List<Medicao> Medicoes { get; set; } = new List<Medicao>();
+        /// <summary>Instalações deste modelo nos postos.</summary>
+        public List<PostoTanque> PostoTanques { get; set; } = new List<PostoTanque>();
+
+        [NotMapped]
+        public string Descricao
+        {
+            get
+            {
+                var medidas = $"{Volume / 1000.0:0.##} m³ · Ø {Diametro:0.00} × {Comprimento:0.00} m";
+                return string.IsNullOrWhiteSpace(Nome) ? medidas : $"{Nome} ({medidas})";
+            }
+        }
     }
 }

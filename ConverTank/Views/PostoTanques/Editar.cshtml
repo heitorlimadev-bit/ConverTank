@@ -1,0 +1,51 @@
+@model PostoTanque
+
+@{
+    ViewData["Title"] = "Editar Tanque do Posto";
+}
+
+<div class="text-center my-4">
+    <h1 class="display-2">
+        <i class="bi bi-pencil-square text-warning"></i> Editar Tanque do Posto
+    </h1>
+    <p class="text-secondary">Posto: <strong class="text-white">@ViewBag.Posto.Nome</strong> · tanque ID @Model.Id</p>
+</div>
+
+<form asp-action="Editar" method="post" class="shadow">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="PostoId" />
+
+    <div class="mb-3">
+        <label for="modeloSelect" class="form-label">Modelo do tanque</label>
+        <select asp-for="TanqueId" class="form-select" id="modeloSelect" required>
+            @foreach (Tanque modelo in ViewBag.Modelos)
+            {
+                <option value="@modelo.Id">@modelo.Descricao — @(modelo.Fabricante?.Nome)</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="combustivelSelect" class="form-label">Combustível armazenado</label>
+        <select asp-for="CombustivelId" class="form-select" id="combustivelSelect" required>
+            @foreach (Combustivel combustivel in ViewBag.Combustiveis)
+            {
+                <option value="@combustivel.Id">@combustivel.Nome - (@combustivel.Fornecedor?.Nome)</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="identificacaoInput" class="form-label">Identificação no posto <span class="text-secondary">(opcional)</span></label>
+        <input asp-for="Identificacao" class="form-control" id="identificacaoInput" />
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-save"></i> Salvar Alterações
+        </button>
+        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@Model.PostoId">
+            <i class="bi bi-x-circle"></i> Cancelar e Voltar
+        </a>
+    </div>
+</form>

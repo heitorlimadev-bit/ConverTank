@@ -1,36 +1,39 @@
 @model Tanque
 
 @{
-    ViewData["Title"] = "Editar Tanque";
+    ViewData["Title"] = "Editar Modelo de Tanque";
+    int instalacoes = ViewBag.Instalacoes ?? 0;
 }
 
 <div class="text-center my-4">
     <h1 class="display-2">
-        <i class="bi bi-pencil-square text-warning"></i> Editar Tanque de Combustível
+        <i class="bi bi-pencil-square text-warning"></i> Editar Modelo de Tanque
     </h1>
-    <p class="text-secondary">Edite as especificações técnicas do tanque de armazenamento</p>
+    <p class="text-secondary">Edite as especificações técnicas do modelo</p>
+    @if (instalacoes > 0)
+    {
+        <div class="alert alert-warning d-inline-block">
+            <i class="bi bi-exclamation-triangle"></i>
+            Este modelo está instalado em <strong>@instalacoes</strong> tanque(s). Alterar as dimensões muda o cálculo de todos eles
+            (medições já gravadas não são recalculadas).
+        </div>
+    }
 </div>
 
 <form asp-action="Editar" method="post" class="shadow">
     <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="PostoId" value="@ViewBag.PostoId" />
+
+    <div class="mb-3">
+        <label for="nomeInput" class="form-label">Nome do modelo <span class="text-secondary">(opcional)</span></label>
+        <input asp-for="Nome" class="form-control" id="nomeInput" />
+    </div>
 
     <div class="mb-3">
         <label for="fabricanteSelect" class="form-label">Fabricante do Tanque</label>
         <select asp-for="FabricanteId" class="form-select" id="fabricanteSelect" required>
             @foreach (var fabricante in ViewBag.Fabricantes)
             {
-                <option value="@fabricante.Id">@fabricante.Nome</option> 
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="combustivelSelect" class="form-label">Combustível Armazenado</label>
-        <select asp-for="CombustivelId" class="form-select" id="combustivelSelect" required>
-            @foreach (var combustivel in ViewBag.Combustiveis)
-            {
-                <option value="@combustivel.Id">@combustivel.Nome - (@combustivel.Fornecedor.Nome)</option>
+                <option value="@fabricante.Id">@fabricante.Nome</option>
             }
         </select>
     </div>
@@ -55,7 +58,7 @@
         <button class="btn btn-primary" type="submit">
             <i class="bi bi-save"></i> Salvar Alterações
         </button>
-        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@ViewBag.PostoId">
+        <a class="btn btn-secondary" asp-action="Index">
             <i class="bi bi-x-circle"></i> Cancelar e Voltar
         </a>
     </div>

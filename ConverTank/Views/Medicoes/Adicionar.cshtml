@@ -9,16 +9,16 @@
         <i class="bi bi-rulers text-warning"></i> Registrar Medição
     </h1>
     <p class="text-secondary">Informe o nível de altura do líquido na régua (cm) para cálculo volumétrico</p>
-    @if (ViewBag.Tanque != null)
+    @if (ViewBag.PostoTanque is PostoTanque pt)
     {
         <div class="badge bg-secondary px-3 py-2 fs-6">
-            Tanque #@ViewBag.Tanque.Id - @(ViewBag.Tanque.Combustivel?.Nome ?? "Combustível") | Capacidade: @ViewBag.Tanque.Volume L | Diâmetro: @ViewBag.Tanque.Diametro.ToString("N2") m
+            @(pt.Posto?.Nome) · @pt.Rotulo - @(pt.Combustivel?.Nome ?? "Combustível") | Capacidade: @pt.Tanque.Volume L | Diâmetro: @pt.Tanque.Diametro.ToString("N2") m
         </div>
     }
 </div>
 
 <form asp-action="Adicionar" method="post" class="shadow">
-    <input type="hidden" asp-for="TanqueId" value="@ViewBag.TanqueId" />
+    <input type="hidden" asp-for="PostoTanqueId" value="@ViewBag.PostoTanqueId" />
 
     <div class="mb-3">
         <label for="alturaInput" class="form-label">Altura do Líquido (cm)</label>
@@ -35,7 +35,7 @@
         <button class="btn btn-primary" type="submit">
             <i class="bi bi-check-lg"></i> Salvar e Calcular Volume
         </button>
-        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@ViewBag.TanqueId">
+        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@ViewBag.PostoTanqueId">
             <i class="bi bi-arrow-left"></i> Voltar para Medições
         </a>
     </div>

@@ -1,16 +1,20 @@
 @model List<Tanque>
 
 @{
-    ViewData["Title"] = "Tanques";
+    ViewData["Title"] = "Modelos de Tanque";
+    bool admin = ViewBag.Administrador == true;
+    var br = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
 <div class="text-center">
     <h1 class="display-2">
-        <i class="bi bi-fuel-pump text-warning me-2"></i> Tanques de Armazenamento
+        <i class="bi bi-fuel-pump text-warning me-2"></i> Modelos de Tanque
     </h1>
-    @if (ViewBag.Posto != null)
+    <p class="text-secondary fs-5">Cadastre aqui as especificações de cada modelo. Para colocar um modelo em um posto, abra o posto e use “Instalar tanque”.</p>
+
+    @if (TempData["Erro"] != null)
     {
-        <p class="text-secondary fs-5">Posto: <strong class="text-white">@ViewBag.Posto.Nome</strong></p>
+        <div class="alert alert-danger">@TempData["Erro"]</div>
     }
 
     <div class="card shadow border-0">
@@ -20,51 +24,75 @@
                     <thead class="table-light">
                         <tr>
                             <th scope="col">Id</th>
+                            <th scope="col">Modelo</th>
                             <th scope="col">Fabricante</th>
-                            <th scope="col">Combustível</th>
+                            <th scope="col">Capacidade</th>
                             <th scope="col">Diâmetro (m)</th>
-                            <th scope="col">Raio (m)</th>
                             <th scope="col">Comprimento (m)</th>
-                            <th scope="col">Volume (L)</th>
+                            <th scope="col">Instalado em</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="8" class="text-secondary">Nenhum modelo cadastrado.</td></tr>
+                        }
                         @foreach (var tanque in Model)
                         {
+                            var usos = tanque.PostoTanques
+                                .Where(pt => pt.Posto != null)
+                                .GroupBy(pt => pt.Posto.Nome)
+                                .OrderBy(g => g.Key)
+                                .Select(g => g.Count() > 1 ? $"{g.Key} ×{g.Count()}" : g.Key)
+                                .ToList();
                             <tr>
                                 <th scope="row">@tanque.Id</th>
+                                <td>@(string.IsNullOrWhiteSpace(tanque.Nome) ? "—" : tanque.Nome)</td>
                                 <td>@(tanque.Fabricante?.Nome ?? "-")</td>
                                 <td>
                                     <span class="badge bg-warning text-dark px-3 py-2">
-                                        <i class="bi bi-droplet-fill me-1"></i> @(tanque.Combustivel?.Nome ?? "Não Definido")
+                                        @((tanque.Volume / 1000.0).ToString("0.##", br)) m³
                                     </span>
+                                    <small class="text-secondary d-block">@tanque.Volume.ToString("N0", br) L</small>
                                 </td>
-                                <td>@tanque.Diametro.ToString("N2") m</td>
-                                <td>@tanque.Raio.ToString("N2") m</td>
-                                <td>@tanque.Comprimento.ToString("N2") m</td>
-                                <td>@tanque.Volume.ToString("N0") L</td>
+                                <td>@tanque.Diametro.ToString("0.00", br)</td>
+                                <td>@tanque.Comprimento.ToString("0.00", br)</td>
+                                <td class="text-start small">
+                                    @if (usos.Any())
+                                    {
+                                        <strong>@tanque.PostoTanques.Count tanque(s):</strong> @string.Join(", ", usos)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary">não instalado</span>
+                                    }
+                                </td>
                                 <td>
-                                    <a class="btn btn-primary btn-sm" asp-controller="Medicoes" asp-action="Index" asp-route-id="@tanque.Id">
-                                        <i class="bi bi-eye"></i> Medições
-                                    </a>
-                                    <a class="btn btn-secondary btn-sm" asp-action="Editar" asp-route-id="@tanque.Id">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" asp-action="Apagar" asp-route-id="@tanque.Id">
-                                        <i class="bi bi-trash"></i> Apagar
-                                    </a>
+                                    @if (admin)
+                                    {
+                                        <a class="btn btn-secondary btn-sm" asp-action="Editar" asp-route-id="@tanque.Id">
+                                            <i class="bi bi-pencil"></i> Editar
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" asp-action="Apagar" asp-route-id="@tanque.Id"
+                                           onclick="return confirm('Apagar este modelo de tanque?');">
+                                            <i class="bi bi-trash"></i> Apagar
+                                        </a>
+                                    }
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
                 <div class="d-grid gap-2 mt-4">
-                    <a class="btn btn-primary" asp-controller="Tanques" asp-action="Adicionar" asp-route-postoId="@ViewBag.PostoId">
-                        <i class="bi bi-plus-circle"></i> Adicionar Tanque
-                    </a>
-                    <a class="btn btn-secondary" asp-controller="Postos" asp-action="Index">
-                        <i class="bi bi-arrow-left"></i> Voltar para Postos
+                    @if (admin)
+                    {
+                        <a class="btn btn-primary" asp-action="Adicionar">
+                            <i class="bi bi-plus-circle"></i> Novo modelo de tanque
+                        </a>
+                    }
+                    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-arrow-left"></i> Voltar
                     </a>
                 </div>
             </div>

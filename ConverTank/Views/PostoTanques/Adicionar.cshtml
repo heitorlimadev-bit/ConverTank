@@ -1,0 +1,62 @@
+@model PostoTanque
+
+@{
+    ViewData["Title"] = "Instalar Tanque";
+}
+
+<div class="text-center my-4">
+    <h1 class="display-2">
+        <i class="bi bi-plus-square text-warning"></i> Instalar Tanque
+    </h1>
+    <p class="text-secondary">Posto: <strong class="text-white">@ViewBag.Posto.Nome</strong> — escolha um modelo cadastrado na aba Tanques e o combustível que ele vai armazenar.</p>
+</div>
+
+<form asp-action="Adicionar" method="post" class="shadow">
+    <input type="hidden" asp-for="PostoId" value="@ViewBag.PostoId" />
+
+    <div class="mb-3">
+        <label for="modeloSelect" class="form-label">Modelo do tanque</label>
+        <select asp-for="TanqueId" class="form-select" id="modeloSelect" required>
+            <option value="" disabled selected>-- Selecione o Modelo --</option>
+            @foreach (Tanque modelo in ViewBag.Modelos)
+            {
+                <option value="@modelo.Id">@modelo.Descricao — @(modelo.Fabricante?.Nome)</option>
+            }
+        </select>
+        <small class="text-secondary mt-1 d-block">
+            Não encontrou? <a asp-controller="Tanques" asp-action="Adicionar">Cadastre um novo modelo</a>.
+        </small>
+    </div>
+
+    <div class="mb-3">
+        <label for="combustivelSelect" class="form-label">Combustível armazenado</label>
+        <select asp-for="CombustivelId" class="form-select" id="combustivelSelect" required>
+            <option value="" disabled selected>-- Selecione o Combustível --</option>
+            @foreach (Combustivel combustivel in ViewBag.Combustiveis)
+            {
+                <option value="@combustivel.Id">@combustivel.Nome - (@combustivel.Fornecedor?.Nome)</option>
+            }
+        </select>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mb-3">
+            <label for="identificacaoInput" class="form-label">Identificação no posto <span class="text-secondary">(opcional)</span></label>
+            <input asp-for="Identificacao" class="form-control" id="identificacaoInput" placeholder="Ex: T3 ou Bipartido A — vazio usa a numeração automática" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="quantidadeInput" class="form-label">Quantidade</label>
+            <input name="quantidade" id="quantidadeInput" type="number" min="1" max="20" value="1" class="form-control" required />
+            <small class="text-secondary mt-1 d-block">Instala o mesmo modelo várias vezes neste posto.</small>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-check-lg"></i> Instalar
+        </button>
+        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@ViewBag.PostoId">
+            <i class="bi bi-x-circle"></i> Cancelar e Voltar
+        </a>
+    </div>
+</form>

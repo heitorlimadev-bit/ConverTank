@@ -1,0 +1,168 @@
+@using ConverTank.Services
+@model Inventario
+
+@{
+    ViewData["Title"] = "Inventário " + Model.Codigo;
+    bool admin = ViewBag.Administrador == true;
+    var grupos = (List<GrupoCombustivel>)ViewBag.Grupos;
+    var porPosto = Model.Itens.OrderBy(i => i.PostoNome).ThenBy(i => i.NumeroNoPosto).GroupBy(i => i.PostoNome);
+}
+
+<div class="text-center">
+    <h1 class="display-2">
+        <i class="bi bi-clipboard-data text-warning me-2"></i> Inventário nº @Model.Id
+    </h1>
+    <p class="text-secondary fs-5">
+        @Model.Descricao · referência <strong class="text-white">@Model.DataReferencia.ToString("dd/MM/yyyy")</strong>
+        @if (Model.DataImportacao.HasValue)
+        {
+            <span> · medições importadas em @Model.DataImportacao.Value.ToString("dd/MM/yyyy HH:mm")</span>
+        }
+    </p>
+
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensagem"]</div>
+    }
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100"><div class="card-body">
+                <div class="text-secondary">Tanques medidos</div>
+                <div class="fs-3 fw-bold">@Model.TanquesMedidos / @Model.Itens.Count</div>
+            </div></div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100"><div class="card-body">
+                <div class="text-secondary">Tanques com PPL</div>
+                <div class="fs-3 fw-bold">@Model.TanquesComPreco / @Model.Itens.Count</div>
+            </div></div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100"><div class="card-body">
+                <div class="text-secondary">Volume total</div>
+                <div class="fs-3 fw-bold">@FormatoBR.Numero(Model.VolumeTotalLitros) L</div>
+            </div></div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100"><div class="card-body">
+                <div class="text-secondary">Valor total</div>
+                <div class="fs-3 fw-bold text-warning">@FormatoBR.Moeda(Model.ValorTotal)</div>
+            </div></div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        <a class="btn btn-secondary" asp-action="Formulario" asp-route-id="@Model.Id">
+            <i class="bi bi-file-earmark-excel"></i> 1. Baixar formulário
+        </a>
+        @if (admin)
+        {
+            <a class="btn btn-primary" asp-action="Importar" asp-route-id="@Model.Id">
+                <i class="bi bi-file-earmark-arrow-up"></i> 2. Importar medições
+            </a>
+            <a class="btn btn-primary" asp-action="Precos" asp-route-id="@Model.Id">
+                <i class="bi bi-currency-dollar"></i> 3. Informar PPL
+            </a>
+        }
+        <a class="btn btn-success" asp-action="Saida" asp-route-id="@Model.Id">
+            <i class="bi bi-file-earmark-spreadsheet"></i> 4. Planilha de estoque
+        </a>
+        <a class="btn btn-secondary" asp-action="Index">
+            <i class="bi bi-arrow-left"></i> Inventários
+        </a>
+    </div>
+    @if (Model.TanquesMedidos < Model.Itens.Count || Model.TanquesComPreco < Model.Itens.Count)
+    {
+        <p class="text-warning small">
+            <i class="bi bi-exclamation-triangle"></i>
+            A planilha de estoque pode ser gerada agora, mas tanques sem medição entram com quantidade 0 e sem PPL ficam com preço em branco.
+        </p>
+    }
+
+    <!-- Resumo por combustível -->
+    <div class="card shadow border-0 mb-4">
+        <div class="card-header text-start fw-bold"><i class="bi bi-droplet-half"></i> Resumo por combustível e fornecedor</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Combustível</th>
+                            <th>Fornecedor</th>
+                            <th>Tanques</th>
+                            <th>Volume (L)</th>
+                            <th>PPL</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var g in grupos)
+                        {
+                            <tr>
+                                <td><span class="badge bg-warning text-dark px-3 py-2">@g.Combustivel</span></td>
+                                <td>@g.FornecedorNome</td>
+                                <td>@g.Itens.Count</td>
+                                <td>@FormatoBR.Numero(g.VolumeLitros)</td>
+                                <td>@(g.PplComum.HasValue ? FormatoBR.Ppl(g.PplComum) : (g.Itens.Any(i => i.Ppl.HasValue) ? "vários" : "—"))</td>
+                                <td>@FormatoBR.Moeda(g.ValorTotal)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalhe por posto -->
+    @foreach (var posto in porPosto)
+    {
+        <div class="card shadow border-0 mb-4">
+            <div class="card-header text-start fw-bold"><i class="bi bi-geo-alt"></i> @posto.Key</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tanque</th>
+                                <th>Combustível</th>
+                                <th>Fornecedor</th>
+                                <th>Capacidade</th>
+                                <th>Medição (cm)</th>
+                                <th>Volume (L)</th>
+                                <th>Ocupação</th>
+                                <th>PPL</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in posto)
+                            {
+                                <tr class="@(item.AlturaCm.HasValue ? "" : "table-warning")">
+                                    <th scope="row">@item.Rotulo</th>
+                                    <td><span class="badge bg-warning text-dark px-3 py-2">@item.Combustivel</span></td>
+                                    <td>@item.FornecedorNome</td>
+                                    <td>@item.CapacidadeM3.ToString("0.##", FormatoBR.Cultura) m³</td>
+                                    <td>@(item.AlturaCm.HasValue ? FormatoBR.Numero(item.AlturaCm, 1) : "sem leitura")</td>
+                                    <td>@FormatoBR.Numero(item.VolumeLitros)</td>
+                                    <td>@(item.OcupacaoPercentual.HasValue ? FormatoBR.Numero(item.OcupacaoPercentual, 1) + "%" : "—")</td>
+                                    <td>@FormatoBR.Ppl(item.Ppl)</td>
+                                    <td>@FormatoBR.Moeda(item.ValorTotal)</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="fw-bold">
+                                <td colspan="5">Total do posto</td>
+                                <td>@FormatoBR.Numero(posto.Sum(i => i.VolumeLitros ?? 0))</td>
+                                <td></td>
+                                <td></td>
+                                <td>@FormatoBR.Moeda(posto.Sum(i => i.ValorTotal ?? 0m))</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

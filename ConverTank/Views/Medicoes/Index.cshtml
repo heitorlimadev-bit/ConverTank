@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Medições do Tanque";
-    var tanque = ViewBag.Tanque as Tanque;
+    var postoTanque = ViewBag.PostoTanque as PostoTanque;
+    var tanque = postoTanque?.Tanque;
 }
 
 <div class="text-center">
@@ -17,12 +18,13 @@
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <span class="text-secondary d-block small">TANQUE</span>
-                        <strong class="fs-5 text-white">#@tanque.Id</strong>
+                        <strong class="fs-5 text-white">@(postoTanque!.Posto?.Nome) · @postoTanque.Rotulo</strong>
+                        <small class="text-secondary d-block">@tanque.Descricao</small>
                     </div>
                     <div class="col-md-3">
                         <span class="text-secondary d-block small">COMBUSTÍVEL</span>
                         <span class="badge bg-warning text-dark px-2 py-1">
-                            <i class="bi bi-droplet-fill me-1"></i> @(tanque.Combustivel?.Nome ?? "Não Definido")
+                            <i class="bi bi-droplet-fill me-1"></i> @(postoTanque.Combustivel?.Nome ?? "Não Definido")
                         </span>
                     </div>
                     <div class="col-md-3">
@@ -89,12 +91,12 @@
                     </tbody>
                 </table>
                 <div class="d-grid gap-2 mt-4">
-                    <a class="btn btn-primary" asp-controller="Medicoes" asp-action="Adicionar" asp-route-tanqueId="@ViewBag.TanqueId">
+                    <a class="btn btn-primary" asp-controller="Medicoes" asp-action="Adicionar" asp-route-postoTanqueId="@ViewBag.PostoTanqueId">
                         <i class="bi bi-plus-circle"></i> Realizar Nova Medição
                     </a>
                     @if (ViewBag.PostoId != null)
                     {
-                        <a class="btn btn-secondary" asp-controller="Tanques" asp-action="Index" asp-route-id="@ViewBag.PostoId">
+                        <a class="btn btn-secondary" asp-controller="PostoTanques" asp-action="Index" asp-route-id="@ViewBag.PostoId">
                             <i class="bi bi-arrow-left"></i> Voltar para Tanques
                         </a>
                     }

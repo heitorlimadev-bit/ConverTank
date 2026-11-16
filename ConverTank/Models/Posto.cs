@@ -1,9 +1,10 @@
-﻿namespace ConverTank.Models
+namespace ConverTank.Models
 {
     public class Posto : Entidade
     {
 
-        public List <Tanque> Tanques { get; set;} = new List<Tanque>();
+        /// <summary>Tanques instalados neste posto (relação N:N com o modelo de tanque).</summary>
+        public List<PostoTanque> PostoTanques { get; set; } = new List<PostoTanque>();
 
         public List <UsuarioPosto> UsuarioPostos { get; set;}
         

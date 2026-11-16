@@ -1,0 +1,165 @@
+﻿### POSTOS
+Id|Nome|Status
+--|----|------
+6|Abundancia|1
+15|Anahata|1
+1|Ananda|1
+19|Conexão|1
+5|Eldorado|1
+18|Genesis|1
+14|Itamarati Dez|1
+7|Jaya|1
+3|Liberty|1
+17|Marcopolo|1
+8|Matec|1
+13|Mitocondria|1
+16|Prakash|1
+10|São Domingos|1
+12|Star Alliance|1
+11|Star One|1
+4|Vanguard|1
+9|Visao Futuro|1
+2|Yantra|1
+### FORNECEDORES
+Id|Nome|Status
+--|----|------
+20|ALE Combustíveis S.A.|1
+21|Vibra Energia S.A.|1
+### FABRICANTES
+Id|Nome|Status
+--|----|------
+22|Petro Tanque|1
+### COMBUSTIVEIS
+Id|Nome|FornecedorId|Fornecedor|Status
+--|----|------------|----------|------
+10|Diesel S10|20|ALE Combustíveis S.A.|1
+11|Diesel S500|20|ALE Combustíveis S.A.|1
+8|Etanol|20|ALE Combustíveis S.A.|1
+7|Gasolina|20|ALE Combustíveis S.A.|1
+9|Gasolina Energy|20|ALE Combustíveis S.A.|1
+14|Arla 32|21|Vibra Energia S.A.|1
+4|Diesel S10|21|Vibra Energia S.A.|1
+5|Diesel S500|21|Vibra Energia S.A.|1
+2|Etanol|21|Vibra Energia S.A.|1
+1|Gasolina|21|Vibra Energia S.A.|1
+3|Gasolina Grid|21|Vibra Energia S.A.|1
+6|Gasolina Podium|21|Vibra Energia S.A.|1
+### MODELOS DE TANQUE
+Id|Nome|Volume|Raio|Comprimento|FabricanteId|Status
+--|----|------|----|-----------|------------|------
+5|7,5m³|7500|1.2745|1.5|22|1
+4|10m3|10000|1.2745|2.0|22|1
+2|15m³|15000|1.2745|3.0|22|1
+3|20m³|20000|1.2745|4.0|22|1
+1|30m³ Pleno|30000|1.2749999999999999|6.0499999999999998|22|1
+### TANQUES INSTALADOS NOS POSTOS
+Id|PostoId|Posto|TanqueId|Volume|CombustivelId|Combustivel|Fornecedor|Identificacao|Status
+--|-------|-----|--------|------|-------------|-----------|----------|-------------|------
+15|6|Abundancia|3|20000|8|Etanol|ALE Combustíveis S.A.|NULL|1
+16|6|Abundancia|4|10000|11|Diesel S500|ALE Combustíveis S.A.|NULL|1
+17|6|Abundancia|2|15000|7|Gasolina|ALE Combustíveis S.A.|NULL|1
+18|6|Abundancia|2|15000|9|Gasolina Energy|ALE Combustíveis S.A.|NULL|1
+11|15|Anahata|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+12|15|Anahata|1|30000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+13|15|Anahata|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+14|15|Anahata|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+1|1|Ananda|2|15000|2|Etanol|Vibra Energia S.A.|NULL|1
+2|1|Ananda|2|15000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+3|1|Ananda|4|10000|1|Gasolina|Vibra Energia S.A.|NULL|1
+4|1|Ananda|4|10000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+5|1|Ananda|4|10000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+82|19|Conexão|4|10000|8|Etanol|ALE Combustíveis S.A.|3|1
+83|19|Conexão|4|10000|7|Gasolina|ALE Combustíveis S.A.|1|1
+84|19|Conexão|1|30000|11|Diesel S500|ALE Combustíveis S.A.|4|1
+85|19|Conexão|2|15000|11|Diesel S500|ALE Combustíveis S.A.|5|1
+86|19|Conexão|2|15000|10|Diesel S10|ALE Combustíveis S.A.|6|1
+87|19|Conexão|4|10000|7|Gasolina|ALE Combustíveis S.A.|2|1
+55|5|Eldorado|3|20000|2|Etanol|Vibra Energia S.A.|NULL|1
+56|5|Eldorado|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+57|5|Eldorado|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+58|5|Eldorado|4|10000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+67|18|Genesis|3|20000|2|Etanol|Vibra Energia S.A.|NULL|1
+68|18|Genesis|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+69|18|Genesis|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+70|18|Genesis|4|10000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+19|14|Itamarati Dez|3|20000|2|Etanol|Vibra Energia S.A.|NULL|1
+20|14|Itamarati Dez|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+21|14|Itamarati Dez|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+22|14|Itamarati Dez|4|10000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+28|7|Jaya|3|20000|2|Etanol|Vibra Energia S.A.|NULL|1
+29|7|Jaya|4|10000|1|Gasolina|Vibra Energia S.A.|NULL|1
+30|7|Jaya|4|10000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+31|7|Jaya|4|10000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+32|7|Jaya|4|10000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+33|3|Liberty|2|15000|2|Etanol|Vibra Energia S.A.|NULL|1
+34|3|Liberty|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+35|3|Liberty|4|10000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+36|3|Liberty|4|10000|6|Gasolina Podium|Vibra Energia S.A.|NULL|1
+37|3|Liberty|4|10000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+46|17|Marcopolo|2|15000|2|Etanol|Vibra Energia S.A.|NULL|1
+47|17|Marcopolo|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+48|17|Marcopolo|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+49|17|Marcopolo|2|15000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+50|17|Marcopolo|2|15000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+59|8|Matec|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+60|8|Matec|1|30000|1|Gasolina|Vibra Energia S.A.|NULL|1
+61|8|Matec|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+62|8|Matec|2|15000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+23|13|Mitocondria|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+24|13|Mitocondria|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+25|13|Mitocondria|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+26|13|Mitocondria|1|30000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+27|13|Mitocondria|2|15000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+6|16|Prakash|2|15000|2|Etanol|Vibra Energia S.A.|3 Prakash B|1
+7|16|Prakash|5|7500|2|Etanol|Vibra Energia S.A.|3 Prakash C|1
+8|16|Prakash|5|7500|1|Gasolina|Vibra Energia S.A.|1 Prakash B|1
+9|16|Prakash|5|7500|3|Gasolina Grid|Vibra Energia S.A.|2 Prakash B|1
+10|16|Prakash|5|7500|4|Diesel S10|Vibra Energia S.A.|4 Prakash C|1
+88|16|Prakash|5|7500|1|Gasolina|Vibra Energia S.A.|1 Prakash C|1
+89|16|Prakash|5|7500|3|Gasolina Grid|Vibra Energia S.A.|2 Prakash C|1
+38|10|São Domingos|3|20000|2|Etanol|Vibra Energia S.A.|NULL|1
+39|10|São Domingos|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+40|10|São Domingos|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+41|10|São Domingos|4|10000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+42|12|Star Alliance|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+43|12|Star Alliance|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+44|12|Star Alliance|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+45|12|Star Alliance|1|30000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+51|11|Star One|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+52|11|Star One|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+53|11|Star One|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+54|11|Star One|1|30000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+71|4|Vanguard|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+72|4|Vanguard|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+73|4|Vanguard|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+74|4|Vanguard|1|30000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+75|4|Vanguard|1|30000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+76|4|Vanguard|4|10000|14|Arla 32|Vibra Energia S.A.|NULL|1
+63|9|Visao Futuro|3|20000|2|Etanol|Vibra Energia S.A.|NULL|1
+64|9|Visao Futuro|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+65|9|Visao Futuro|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+66|9|Visao Futuro|4|10000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+77|2|Yantra|1|30000|2|Etanol|Vibra Energia S.A.|NULL|1
+78|2|Yantra|2|15000|1|Gasolina|Vibra Energia S.A.|NULL|1
+79|2|Yantra|2|15000|3|Gasolina Grid|Vibra Energia S.A.|NULL|1
+80|2|Yantra|2|15000|5|Diesel S500|Vibra Energia S.A.|NULL|1
+81|2|Yantra|2|15000|4|Diesel S10|Vibra Energia S.A.|NULL|1
+### MEDICOES POR TANQUE INSTALADO
+PostoTanqueId|Medicoes
+-------------|--------
+1|1
+2|1
+3|1
+4|1
+5|1
+6|1
+7|1
+8|1
+9|1
+10|1
+11|1
+12|1
+13|1
+14|1
+15|1
+16|1

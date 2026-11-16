@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-bs-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0f151d" />
     <title>@ViewData["Title"] - ConverTank Control</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +38,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Tanques" asp-action="Index">
+                                <i class="bi bi-database"></i> Tanques
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Fabricantes" asp-action="Index">
                                 <i class="bi bi-buildings"></i> Fabricantes
                             </a>
@@ -48,6 +55,11 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Combustiveis" asp-action="Index">
                                 <i class="bi bi-fuel-pump"></i> Combustíveis
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Inventarios" asp-action="Index">
+                                <i class="bi bi-clipboard-data"></i> Inventários
                             </a>
                         </li>
                         <li class="nav-item">

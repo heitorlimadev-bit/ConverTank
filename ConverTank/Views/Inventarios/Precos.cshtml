@@ -1,0 +1,206 @@
+@using ConverTank.Services
+@using System.Globalization
+@model Inventario
+
+@{
+    ViewData["Title"] = "Preço por Litro";
+    var grupos = (List<GrupoCombustivel>)ViewBag.Grupos;
+    var sugestoes = (Dictionary<string, decimal>)ViewBag.Sugestoes;
+    var erros = ViewBag.Erros as List<string>;
+    int j = 0;
+}
+
+<div class="text-center my-4">
+    <h1 class="display-2">
+        <i class="bi bi-currency-dollar text-warning"></i> Preço por Litro (PPL)
+    </h1>
+    <p class="text-secondary">
+        Inventário nº @Model.Id — @Model.Descricao. Digite o PPL em reais de cada combustível:
+        o preço do grupo vale para <strong>todos os tanques com o mesmo combustível e o mesmo fornecedor</strong>.
+        Se algum tanque tiver preço diferente, altere só a linha dele.
+    </p>
+</div>
+
+@if (erros != null && erros.Any())
+{
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach (var e in erros)
+            {
+                <li>@e</li>
+            }
+        </ul>
+    </div>
+}
+
+<form asp-action="Precos" asp-route-id="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+
+    @for (int g = 0; g < grupos.Count; g++)
+    {
+        var grupo = grupos[g];
+        var pplGrupo = FormatoBR.Entrada(grupo.PplComum);
+        sugestoes.TryGetValue(grupo.Chave, out var sugestao);
+        <div class="card shadow border-0 mb-4">
+            <div class="card-header d-flex flex-wrap align-items-center gap-3">
+                <span class="badge bg-warning text-dark px-3 py-2 fs-6">
+                    <i class="bi bi-droplet-fill me-1"></i> @grupo.Combustivel
+                </span>
+                <span class="text-secondary"><i class="bi bi-truck"></i> @grupo.FornecedorNome</span>
+                <span class="text-secondary">@grupo.Itens.Count tanque(s) · @FormatoBR.Numero(grupo.VolumeLitros) L</span>
+
+                <div class="ms-auto d-flex align-items-center gap-2">
+                    <input type="hidden" name="grupos[@g].Combustivel" value="@grupo.Combustivel" />
+                    <input type="hidden" name="grupos[@g].FornecedorId" value="@grupo.FornecedorId" />
+                    <input type="hidden" name="grupos[@g].PplOriginal" value="@pplGrupo" />
+                    <div class="input-group" style="width: 220px;">
+                        <span class="input-group-text">R$/L</span>
+                        <input type="text" inputmode="decimal" class="form-control ppl-grupo fw-bold"
+                               name="grupos[@g].Ppl" value="@pplGrupo" data-grupo="@g"
+                               placeholder="@(sugestao > 0 ? "último: " + FormatoBR.Entrada(sugestao) : "0,000")"
+                               autocomplete="off" />
+                    </div>
+                    @if (sugestao > 0)
+                    {
+                        <button type="button" class="btn btn-outline-secondary btn-sm usar-sugestao"
+                                data-grupo="@g" data-valor="@FormatoBR.Entrada(sugestao)" title="Usar o preço do inventário anterior">
+                            <i class="bi bi-clock-history"></i> Último
+                        </button>
+                    }
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Posto</th>
+                                <th>Tanque</th>
+                                <th>Capacidade</th>
+                                <th>Medição</th>
+                                <th>Volume (L)</th>
+                                <th style="width: 170px;">PPL (R$)</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in grupo.Itens)
+                            {
+                                var pplItem = FormatoBR.Entrada(item.Ppl);
+                                <tr>
+                                    <td>@item.PostoNome</td>
+                                    <td>@item.Rotulo</td>
+                                    <td>@item.CapacidadeM3.ToString("0.##", FormatoBR.Cultura) m³</td>
+                                    <td>@(item.AlturaCm.HasValue ? FormatoBR.Numero(item.AlturaCm, 1) + " cm" : "—")</td>
+                                    <td>@FormatoBR.Numero(item.VolumeLitros)</td>
+                                    <td>
+                                        <input type="hidden" name="itens[@j].Id" value="@item.Id" />
+                                        <input type="hidden" name="itens[@j].PplOriginal" value="@pplItem" />
+                                        <input type="text" inputmode="decimal" class="form-control form-control-sm ppl-item"
+                                               name="itens[@j].Ppl" value="@pplItem" data-grupo="@g"
+                                               data-volume="@((item.VolumeLitros ?? 0).ToString(CultureInfo.InvariantCulture))"
+                                               autocomplete="off" />
+                                    </td>
+                                    <td class="valor-item">@FormatoBR.Moeda(item.ValorTotal)</td>
+                                </tr>
+                                j++;
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="fw-bold">
+                                <td colspan="4">Total @grupo.Combustivel / @grupo.FornecedorNome</td>
+                                <td>@FormatoBR.Numero(grupo.VolumeLitros)</td>
+                                <td></td>
+                                <td class="valor-grupo" data-grupo="@g">@FormatoBR.Moeda(grupo.ValorTotal)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card shadow border-0 mb-4">
+        <div class="card-body d-flex justify-content-between fs-5">
+            <span>Valor total do inventário</span>
+            <strong id="valor-total">@FormatoBR.Moeda(Model.ValorTotal)</strong>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-check-lg"></i> Salvar preços
+        </button>
+        <a class="btn btn-secondary" asp-action="Detalhes" asp-route-id="@Model.Id">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        (function () {
+            const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            function lerNumero(texto) {
+                if (!texto) return null;
+                let t = String(texto).replace(/[^\d.,-]/g, '');
+                const v = t.lastIndexOf(','), p = t.lastIndexOf('.');
+                if (v >= 0 && p >= 0) {
+                    t = v > p ? t.replace(/\./g, '').replace(',', '.') : t.replace(/,/g, '');
+                } else {
+                    t = t.replace(',', '.');
+                }
+                const n = parseFloat(t);
+                return isNaN(n) ? null : n;
+            }
+
+            function recalcular() {
+                const totaisGrupo = {};
+                let total = 0;
+                document.querySelectorAll('.ppl-item').forEach(function (input) {
+                    const ppl = lerNumero(input.value);
+                    const volume = parseFloat(input.dataset.volume) || 0;
+                    const celula = input.closest('tr').querySelector('.valor-item');
+                    const grupo = input.dataset.grupo;
+                    if (ppl === null) {
+                        celula.textContent = '—';
+                        return;
+                    }
+                    const valor = Math.round(volume * ppl * 100) / 100;
+                    celula.textContent = brl.format(valor);
+                    totaisGrupo[grupo] = (totaisGrupo[grupo] || 0) + valor;
+                    total += valor;
+                });
+                document.querySelectorAll('.valor-grupo').forEach(function (celula) {
+                    celula.textContent = brl.format(totaisGrupo[celula.dataset.grupo] || 0);
+                });
+                document.getElementById('valor-total').textContent = brl.format(total);
+            }
+
+            // Preço do grupo → replica para todos os tanques do mesmo combustível e fornecedor
+            function aplicarNoGrupo(grupo, valor) {
+                document.querySelectorAll('.ppl-item[data-grupo="' + grupo + '"]').forEach(function (input) {
+                    input.value = valor;
+                });
+                recalcular();
+            }
+
+            document.querySelectorAll('.ppl-grupo').forEach(function (input) {
+                input.addEventListener('input', function () { aplicarNoGrupo(input.dataset.grupo, input.value); });
+            });
+
+            document.querySelectorAll('.usar-sugestao').forEach(function (botao) {
+                botao.addEventListener('click', function () {
+                    const campo = document.querySelector('.ppl-grupo[data-grupo="' + botao.dataset.grupo + '"]');
+                    campo.value = botao.dataset.valor;
+                    aplicarNoGrupo(botao.dataset.grupo, botao.dataset.valor);
+                });
+            });
+
+            document.querySelectorAll('.ppl-item').forEach(function (input) {
+                input.addEventListener('input', recalcular);
+            });
+        })();
+    </script>
+}

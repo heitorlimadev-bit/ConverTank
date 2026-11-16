@@ -1,18 +1,21 @@
 @model Tanque
 
 @{
-    ViewData["Title"] = "Novo Tanque";
+    ViewData["Title"] = "Novo Modelo de Tanque";
 }
 
 <div class="text-center my-4">
     <h1 class="display-2">
-        <i class="bi bi-fuel-pump-fill text-warning"></i> Novo Tanque de Combustível
+        <i class="bi bi-fuel-pump-fill text-warning"></i> Novo Modelo de Tanque
     </h1>
-    <p class="text-secondary">Cadastre novos tanques de armazenamento associados a este posto</p>
+    <p class="text-secondary">Cadastre a especificação do modelo. Depois instale-o em quantos postos quiser, quantas vezes precisar.</p>
 </div>
 
 <form asp-action="Adicionar" method="post" class="shadow">
-    <input type="hidden" asp-for="PostoId" value="@ViewBag.PostoId" />
+    <div class="mb-3">
+        <label for="nomeInput" class="form-label">Nome do modelo <span class="text-secondary">(opcional)</span></label>
+        <input asp-for="Nome" class="form-control" id="nomeInput" placeholder="Ex: 15 m³ bipartido Zeppini" />
+    </div>
 
     <div class="mb-3">
         <label for="fabricanteSelect" class="form-label">Fabricante do Tanque</label>
@@ -20,18 +23,7 @@
             <option value="" disabled selected>-- Selecione o Fabricante --</option>
             @foreach (var fabricante in ViewBag.Fabricantes)
             {
-                <option value="@fabricante.Id">@fabricante.Nome</option> 
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="combustivelSelect" class="form-label">Combustível Armazenado</label>
-        <select asp-for="CombustivelId" class="form-select" id="combustivelSelect" required>
-            <option value="" disabled selected>-- Selecione o Combustível --</option>
-            @foreach (var combustivel in ViewBag.Combustiveis)
-            {
-                <option value="@combustivel.Id">@combustivel.Nome - (@combustivel.Fornecedor.Nome)</option>
+                <option value="@fabricante.Id">@fabricante.Nome</option>
             }
         </select>
     </div>
@@ -39,7 +31,7 @@
     <div class="row">
         <div class="col-md-4 mb-3">
             <label for="volumeInput" class="form-label">Volume Nominal (L)</label>
-            <input asp-for="Volume" type="number" min="1" class="form-control" id="volumeInput" placeholder="Ex: 10000" required>
+            <input asp-for="Volume" type="number" min="1" class="form-control" id="volumeInput" placeholder="Ex: 15000" required>
         </div>
         <div class="col-md-4 mb-3">
             <label for="comprimentoInput" class="form-label">Comprimento (m)</label>
@@ -54,9 +46,9 @@
 
     <div class="d-grid gap-2 mt-4">
         <button class="btn btn-primary" type="submit">
-            <i class="bi bi-check-lg"></i> Salvar Tanque
+            <i class="bi bi-check-lg"></i> Salvar Modelo
         </button>
-        <a class="btn btn-secondary" asp-action="Index" asp-route-id="@ViewBag.PostoId">
+        <a class="btn btn-secondary" asp-action="Index">
             <i class="bi bi-x-circle"></i> Cancelar e Voltar
         </a>
     </div>

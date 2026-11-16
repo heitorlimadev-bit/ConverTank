@@ -1,0 +1,93 @@
+@model Inventario
+
+@{
+    ViewData["Title"] = "Importar Medições";
+    var resultado = ViewBag.Resultado as ResultadoImportacao;
+}
+
+<div class="text-center my-4">
+    <h1 class="display-2">
+        <i class="bi bi-file-earmark-arrow-up text-warning"></i> Importar Medições
+    </h1>
+    <p class="text-secondary">Inventário nº @Model.Id — @Model.Descricao (referência @Model.DataReferencia.ToString("dd/MM/yyyy"))</p>
+</div>
+
+@if (resultado != null)
+{
+    if (resultado.Sucesso)
+    {
+        <div class="alert alert-success">
+            <i class="bi bi-check-circle"></i>
+            <strong>@resultado.Preenchidos</strong> tanques preenchidos e convertidos para litros.
+            As medições também foram registradas no histórico de cada tanque.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <strong>Nada foi gravado.</strong> Corrija a planilha e envie novamente:
+            <ul class="mb-0">
+                @foreach (var e in resultado.Erros)
+                {
+                    <li>@e</li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (resultado.Avisos.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Avisos:</strong>
+            <ul class="mb-0">
+                @foreach (var a in resultado.Avisos)
+                {
+                    <li>@a</li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (resultado.Sucesso && resultado.SemLeitura.Any())
+    {
+        <div class="alert alert-secondary">
+            <strong>@resultado.SemLeitura.Count tanque(s) ainda sem medição:</strong>
+            @string.Join(" · ", resultado.SemLeitura)
+        </div>
+    }
+
+    @if (resultado.Sucesso)
+    {
+        <div class="d-grid gap-2 mb-4">
+            <a class="btn btn-primary" asp-action="Precos" asp-route-id="@Model.Id">
+                <i class="bi bi-currency-dollar"></i> Continuar: informar PPL dos combustíveis
+            </a>
+            <a class="btn btn-secondary" asp-action="Detalhes" asp-route-id="@Model.Id">
+                <i class="bi bi-eye"></i> Ver inventário
+            </a>
+        </div>
+    }
+}
+
+<form asp-action="Importar" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="shadow">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label for="planilha" class="form-label">Planilha preenchida (.xlsx)</label>
+        <input type="file" id="planilha" name="planilha" class="form-control" accept=".xlsx" required />
+        <small class="text-secondary mt-1 d-block">
+            Use o formulário gerado pelo sistema para este inventário. Linhas sem medição não apagam leituras já importadas.
+        </small>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+        <button class="btn btn-primary" type="submit">
+            <i class="bi bi-upload"></i> Importar e calcular volumes
+        </button>
+        <a class="btn btn-secondary" asp-action="Formulario" asp-route-id="@Model.Id">
+            <i class="bi bi-file-earmark-excel"></i> Baixar formulário
+        </a>
+        <a class="btn btn-secondary" asp-action="Detalhes" asp-route-id="@Model.Id">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
+</form>

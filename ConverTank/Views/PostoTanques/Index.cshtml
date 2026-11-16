@@ -1,0 +1,88 @@
+@model List<PostoTanque>
+
+@{
+    ViewData["Title"] = "Tanques do Posto";
+    bool admin = ViewBag.Administrador == true;
+    var br = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+    int n = 0;
+}
+
+<div class="text-center">
+    <h1 class="display-2">
+        <i class="bi bi-fuel-pump text-warning me-2"></i> Tanques do Posto
+    </h1>
+    @if (ViewBag.Posto != null)
+    {
+        <p class="text-secondary fs-5">Posto: <strong class="text-white">@ViewBag.Posto.Nome</strong> · @Model.Count tanque(s) instalado(s)</p>
+    }
+
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Tanque</th>
+                            <th scope="col">Combustível</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Fabricante</th>
+                            <th scope="col">Capacidade</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="6" class="text-secondary">Nenhum tanque instalado neste posto.</td></tr>
+                        }
+                        @foreach (var pt in Model)
+                        {
+                            n++;
+                            <tr>
+                                <th scope="row">
+                                    @(string.IsNullOrWhiteSpace(pt.Identificacao) ? $"T{n}" : pt.Identificacao)
+                                    <small class="text-secondary d-block">ID @pt.Id</small>
+                                </th>
+                                <td>
+                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                        <i class="bi bi-droplet-fill me-1"></i> @(pt.Combustivel?.Nome ?? "Não Definido")
+                                    </span>
+                                    <small class="text-secondary d-block">@(pt.Combustivel?.Fornecedor?.Nome)</small>
+                                </td>
+                                <td class="text-start">@(pt.Tanque?.Descricao ?? "-")</td>
+                                <td>@(pt.Tanque?.Fabricante?.Nome ?? "-")</td>
+                                <td>@(pt.Tanque == null ? "-" : (pt.Tanque.Volume / 1000.0).ToString("0.##", br) + " m³")</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" asp-controller="Medicoes" asp-action="Index" asp-route-id="@pt.Id">
+                                        <i class="bi bi-eye"></i> Medições
+                                    </a>
+                                    @if (admin)
+                                    {
+                                        <a class="btn btn-secondary btn-sm" asp-action="Editar" asp-route-id="@pt.Id">
+                                            <i class="bi bi-pencil"></i> Editar
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" asp-action="Apagar" asp-route-id="@pt.Id"
+                                           onclick="return confirm('Remover este tanque do posto? O histórico de medições é mantido.');">
+                                            <i class="bi bi-trash"></i> Remover
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="d-grid gap-2 mt-4">
+                    @if (admin)
+                    {
+                        <a class="btn btn-primary" asp-action="Adicionar" asp-route-postoId="@ViewBag.PostoId">
+                            <i class="bi bi-plus-circle"></i> Instalar tanque neste posto
+                        </a>
+                    }
+                    <a class="btn btn-secondary" asp-controller="Postos" asp-action="Index">
+                        <i class="bi bi-arrow-left"></i> Voltar para Postos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

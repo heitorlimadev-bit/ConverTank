@@ -1,0 +1,88 @@
+@using ConverTank.Services
+@model List<Inventario>
+
+@{
+    ViewData["Title"] = "Inventários";
+    bool admin = ViewBag.Administrador == true;
+}
+
+<div class="text-center">
+    <h1 class="display-2">
+        <i class="bi bi-clipboard-data text-warning me-2"></i> Inventários
+    </h1>
+    <p class="text-secondary fs-5">Medição trimestral de todos os tanques de todos os postos</p>
+
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensagem"]</div>
+    }
+
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nº</th>
+                            <th>Trimestre</th>
+                            <th>Data de referência</th>
+                            <th>Tanques medidos</th>
+                            <th>Tanques com PPL</th>
+                            <th>Volume total (L)</th>
+                            <th>Valor total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="8" class="text-secondary">Nenhum inventário criado ainda.</td></tr>
+                        }
+                        @foreach (var inv in Model)
+                        {
+                            <tr>
+                                <th scope="row">@inv.Id</th>
+                                <td>@inv.Descricao</td>
+                                <td>@inv.DataReferencia.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <span class="badge @(inv.TanquesMedidos == inv.Itens.Count ? "bg-success" : "bg-warning text-dark")">
+                                        @inv.TanquesMedidos / @inv.Itens.Count
+                                    </span>
+                                </td>
+                                <td>@inv.TanquesComPreco / @inv.Itens.Count</td>
+                                <td>@FormatoBR.Numero(inv.VolumeTotalLitros)</td>
+                                <td>@FormatoBR.Moeda(inv.ValorTotal)</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" asp-action="Detalhes" asp-route-id="@inv.Id">
+                                        <i class="bi bi-eye"></i> Abrir
+                                    </a>
+                                    <a class="btn btn-secondary btn-sm" asp-action="Formulario" asp-route-id="@inv.Id">
+                                        <i class="bi bi-file-earmark-excel"></i> Formulário
+                                    </a>
+                                    <a class="btn btn-success btn-sm" asp-action="Saida" asp-route-id="@inv.Id">
+                                        <i class="bi bi-file-earmark-spreadsheet"></i> Estoque
+                                    </a>
+                                    @if (admin)
+                                    {
+                                        <a class="btn btn-danger btn-sm" asp-action="Apagar" asp-route-id="@inv.Id"
+                                           onclick="return confirm('Apagar o inventário @inv.Codigo?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (admin)
+            {
+                <div class="d-grid gap-2 mt-4">
+                    <a class="btn btn-primary" asp-action="Novo">
+                        <i class="bi bi-plus-circle"></i> Novo inventário
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

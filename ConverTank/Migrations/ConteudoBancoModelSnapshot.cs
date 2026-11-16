@@ -4,6 +4,7 @@ using ConverTank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -73,6 +74,110 @@ namespace ConverTank.Migrations
                     b.UseTptMappingStrategy();
                 });
 
+            modelBuilder.Entity("ConverTank.Models.Inventario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Ano")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataImportacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataReferencia")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Trimestre")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Ano", "Trimestre");
+
+                    b.ToTable("Inventarios");
+                });
+
+            modelBuilder.Entity("ConverTank.Models.ItemInventario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double?>("AlturaCm")
+                        .HasColumnType("float");
+
+                    b.Property<double>("CapacidadeM3")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Combustivel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DataLeitura")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FornecedorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FornecedorNome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Identificacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InventarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MedicaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumeroNoPosto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostoNome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostoTanqueId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Ppl")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<double?>("VolumeLitros")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventarioId");
+
+                    b.HasIndex("MedicaoId");
+
+                    b.HasIndex("PostoTanqueId");
+
+                    b.ToTable("ItensInventario");
+                });
+
             modelBuilder.Entity("ConverTank.Models.Medicao", b =>
                 {
                     b.Property<int>("Id")
@@ -87,23 +192,23 @@ namespace ConverTank.Migrations
                     b.Property<DateTime>("DataMedicao")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PostoTanqueId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
-
-                    b.Property<int>("TanqueId")
-                        .HasColumnType("int");
 
                     b.Property<double>("Volume")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TanqueId");
+                    b.HasIndex("PostoTanqueId");
 
                     b.ToTable("Medicoes");
                 });
 
-            modelBuilder.Entity("ConverTank.Models.Tanque", b =>
+            modelBuilder.Entity("ConverTank.Models.PostoTanque", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,17 +219,48 @@ namespace ConverTank.Migrations
                     b.Property<int>("CombustivelId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Comprimento")
-                        .HasColumnType("float");
+                    b.Property<string>("Identificacao")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Diametro")
+                    b.Property<int>("PostoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TanqueId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CombustivelId");
+
+                    b.HasIndex("PostoId");
+
+                    b.HasIndex("TanqueId");
+
+                    b.ToTable("PostosTanques", (string)null);
+                });
+
+            modelBuilder.Entity("ConverTank.Models.Tanque", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Comprimento")
                         .HasColumnType("float");
 
                     b.Property<int>("FabricanteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Raio")
+                        .HasColumnType("float");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -134,11 +270,7 @@ namespace ConverTank.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CombustivelId");
-
                     b.HasIndex("FabricanteId");
-
-                    b.HasIndex("PostoId");
 
                     b.ToTable("Tanques");
                 });
@@ -229,42 +361,79 @@ namespace ConverTank.Migrations
                     b.Navigation("Fornecedor");
                 });
 
-            modelBuilder.Entity("ConverTank.Models.Medicao", b =>
+            modelBuilder.Entity("ConverTank.Models.ItemInventario", b =>
                 {
-                    b.HasOne("ConverTank.Models.Tanque", "Tanque")
-                        .WithMany("Medicoes")
-                        .HasForeignKey("TanqueId")
+                    b.HasOne("ConverTank.Models.Inventario", "Inventario")
+                        .WithMany("Itens")
+                        .HasForeignKey("InventarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ConverTank.Models.Medicao", "Medicao")
+                        .WithMany()
+                        .HasForeignKey("MedicaoId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("ConverTank.Models.PostoTanque", "PostoTanque")
+                        .WithMany()
+                        .HasForeignKey("PostoTanqueId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Inventario");
+
+                    b.Navigation("Medicao");
+
+                    b.Navigation("PostoTanque");
+                });
+
+            modelBuilder.Entity("ConverTank.Models.Medicao", b =>
+                {
+                    b.HasOne("ConverTank.Models.PostoTanque", "PostoTanque")
+                        .WithMany("Medicoes")
+                        .HasForeignKey("PostoTanqueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PostoTanque");
+                });
+
+            modelBuilder.Entity("ConverTank.Models.PostoTanque", b =>
+                {
+                    b.HasOne("ConverTank.Models.Combustivel", "Combustivel")
+                        .WithMany()
+                        .HasForeignKey("CombustivelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ConverTank.Models.Posto", "Posto")
+                        .WithMany("PostoTanques")
+                        .HasForeignKey("PostoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ConverTank.Models.Tanque", "Tanque")
+                        .WithMany("PostoTanques")
+                        .HasForeignKey("TanqueId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Combustivel");
+
+                    b.Navigation("Posto");
 
                     b.Navigation("Tanque");
                 });
 
             modelBuilder.Entity("ConverTank.Models.Tanque", b =>
                 {
-                    b.HasOne("ConverTank.Models.Combustivel", "Combustivel")
-                        .WithMany()
-                        .HasForeignKey("CombustivelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ConverTank.Models.Fabricante", "Fabricante")
                         .WithMany("Tanques")
                         .HasForeignKey("FabricanteId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("ConverTank.Models.Posto", "Posto")
-                        .WithMany("Tanques")
-                        .HasForeignKey("PostoId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Combustivel");
-
                     b.Navigation("Fabricante");
-
-                    b.Navigation("Posto");
                 });
 
             modelBuilder.Entity("ConverTank.Models.UsuarioPosto", b =>
@@ -317,9 +486,19 @@ namespace ConverTank.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ConverTank.Models.Tanque", b =>
+            modelBuilder.Entity("ConverTank.Models.Inventario", b =>
+                {
+                    b.Navigation("Itens");
+                });
+
+            modelBuilder.Entity("ConverTank.Models.PostoTanque", b =>
                 {
                     b.Navigation("Medicoes");
+                });
+
+            modelBuilder.Entity("ConverTank.Models.Tanque", b =>
+                {
+                    b.Navigation("PostoTanques");
                 });
 
             modelBuilder.Entity("ConverTank.Models.Usuario", b =>
@@ -344,7 +523,7 @@ namespace ConverTank.Migrations
 
             modelBuilder.Entity("ConverTank.Models.Posto", b =>
                 {
-                    b.Navigation("Tanques");
+                    b.Navigation("PostoTanques");
 
                     b.Navigation("UsuarioPostos");
                 });

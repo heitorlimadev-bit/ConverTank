@@ -1,4 +1,4 @@
-﻿using ConverTank.Data;
+using ConverTank.Data;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +65,9 @@ namespace ConverTank.Controllers
             novoUsuario.Nome = dados.Nome;
             novoUsuario.Login = dados.Login;
             novoUsuario.Senha = dados.Senha;
+
+            // Banco novo: o primeiro usuário cadastrado vira administrador
+            novoUsuario.Administrador = !context.Usuarios.Any();
 
             context.Usuarios.Add(novoUsuario);
             context.SaveChanges();
